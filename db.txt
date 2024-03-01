@@ -1,0 +1,48 @@
+Seeker:
+ - Tên
+ - Email
+ - Password
+ - Avatar
+ - Mã code
+ - Kỹ năng
+ - Học vấn
+ - CV
+
+Company: 
+ - Tên
+ - Email
+ - Password
+ - Avatar
+ - Info
+ - Quy mô
+ - Địa chỉ
+
+Quản trị viên:
+ - Email
+ - Password
+
+Công việc (jobs) :
+ - title : Tiêu đề
+ - description: Mô tả công việc
+ - company_id : Công ty
+ - created_at 
+ - expired_at : hạn
+ - industry : ngành nghề
+ - salary_start : lương
+ - salary_end : lương
+ - address : địa chỉ làm việc
+ - quantity : số lượng tuyển
+
+Applications (Đơn ứng tuyển):
+ - id
+ - job_id
+ - user_id
+ - status
+ - applied_at 
+ - CV
+
+Message
+ - id
+ - user_id
+ - content
+ - company_id

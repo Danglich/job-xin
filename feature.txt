@@ -1,0 +1,25 @@
+Người tìm việc :
+ - Đăng nhập , đăng ký , quản lý tài khoàn
+ - Xem thông tin việc làm 
+ - Ứng tuyển 
+ - Đánh giá công ty sau khi ứng tuyển
+ - Tìm kiếm công việc theo mục đích
+
+Nhà tuyển dụng :
+ - Đăng ký , đăng nhập
+ - Quản lý thông tin công ty
+ - Đăng tuyển công việc
+ - Quản lý hồ sơ ứng tuyển 
+ - Quản lý công việc
+ - Đánh giá và nhận xét
+
+Quản trị viên:
+ - Đối với người tìm việc :
+	+ Xem và quản lý tài khoản người tìm việc
+	+ Xem và quản lý ứng tuyển
+	+ Quản lý đánh giá và nhận xét
+ - Đối với nhà tuyển dụng :
+	+ Xem và quản lý tài khoản công ty
+	+ Xem và quản lý công việc đã đăng
+	+ Quản lý hồ sơ ứng viên
+	+ Quản lý đánh giá và nhận xét
