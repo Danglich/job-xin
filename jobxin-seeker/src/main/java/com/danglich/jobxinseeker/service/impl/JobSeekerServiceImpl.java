@@ -2,6 +2,7 @@ package com.danglich.jobxinseeker.service.impl;
 
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.danglich.jobxinseeker.dto.RegisterDTO;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class JobSeekerServiceImpl implements JobSeekerService{
 	
 	private final JobSeekerRepository repository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public JobSeekers register(RegisterDTO registerDTO) {
@@ -26,14 +28,12 @@ public class JobSeekerServiceImpl implements JobSeekerService{
 		if(seeker.isPresent()) {
 			throw new AuthException("Email đã có tài khoản, vui lòng đăng nhập");
 		}
-//		JobSeekers seeker = JobSeekers.builder()
-//								.email(registerDTO.getEmail())
-//								.password(registerDTO.getPassword())
-//								.build();
+
 		
 		return repository.save(JobSeekers.builder()
 								.email(registerDTO.getEmail())
-								.password(registerDTO.getPassword())
+								.password(passwordEncoder.encode(registerDTO.getPassword()))
+								.enabled(true)
 								.build());
 	}
 

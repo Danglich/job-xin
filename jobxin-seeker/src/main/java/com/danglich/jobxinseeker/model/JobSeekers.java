@@ -38,6 +38,9 @@ public class JobSeekers extends DateAudit {
 	@Column(name = "avatar")
 	private String avatar; 
 	
+	@Column(name = "enabled")
+	private boolean enabled;
+	
 	
 
 }
