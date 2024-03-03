@@ -2,8 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Đăng nhập/Đăng ký</title>
+<link th:href="@{/style/home.css}" rel="stylesheet">
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 </head>
 <body>
 	<div class="container mt-4">
@@ -17,6 +19,9 @@
 								<h5 class="card-title">Đăng nhập</h5>
 								<div th:if="${param.error}" class="alert alert-danger" role="alert">
 									<span >Email or password invalid!</span>
+								</div>
+								<div th:if="${param.logout}" class="alert alert-info" role="alert">
+									<span >Logged out successfully</span>
 								</div>
 								<form action="#" th:action="@{/login-process}" method="post" th:object="${loginDTO}">
 									<div class="form-group">

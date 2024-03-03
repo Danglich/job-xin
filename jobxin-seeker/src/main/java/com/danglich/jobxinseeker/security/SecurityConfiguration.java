@@ -9,9 +9,12 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 import com.danglich.jobxinseeker.model.CustomUserDetail;
 import com.danglich.jobxinseeker.service.impl.CustomUserService;
@@ -23,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 	
-	private final PasswordEncoder passwordEncoder;
 	
 	private final AuthenticationProvider authenticationProvider;
 
@@ -34,6 +36,7 @@ public class SecurityConfiguration {
 					configurer
 						.requestMatchers("/").permitAll()
 						.requestMatchers("/auth/**").permitAll()
+						.requestMatchers("/style/**").permitAll()
 						.anyRequest().authenticated()
 			
 				)
@@ -44,13 +47,18 @@ public class SecurityConfiguration {
 									.permitAll()
 					)
 			.logout(logout -> 
-				logout.logoutSuccessUrl("/")
+				logout.logoutUrl("/logout")
+					.logoutSuccessUrl("/auth/login?logout=true")
 					  .permitAll())
 			.authenticationProvider(authenticationProvider)
+			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
 		;
 
 		return http.build();
 	}
+	
+	
+	
 	
 	
 

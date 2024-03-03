@@ -1,5 +1,9 @@
 package com.danglich.jobxinseeker.controller;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,12 +27,36 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 	
 	private final JobSeekerService jobSeekerService;
+	private final AuthenticationManager authenticationManager;
 	
 	@GetMapping("/login")
 	public String showLoginPage(Model theModel) {
 		theModel.addAttribute("loginDTO", new LoginDTO());
 		
 		return "auth/login-form";
+	}
+	
+	@PostMapping("/login")
+	public String login(@Valid @ModelAttribute("loginDTO") LoginDTO loginDTO , BindingResult theBindingResult,
+			RedirectAttributes redirectAttributes
+			) {
+		if(theBindingResult.hasErrors()) {
+			return "auth/login-form";
+		}
+		
+		try {
+			
+			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
+	        SecurityContextHolder.getContext().setAuthentication(authentication);
+			
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+			return "redirect:/auth/login";
+		}
+		
+		
+		
+		return "redirect:/";
 	}
 	
 	

@@ -1,0 +1,15 @@
+.banner-container {
+
+    background: linear-gradient(to top, #f4fffd 0%, #cbffe9 100%);
+    padding-bottom: 100px;
+}
+
+.seach-form {
+    display: flex;
+    justify-content: space-around;
+}
+
+.seach-form.form-group {
+    padding: 12px 0;
+}
+
