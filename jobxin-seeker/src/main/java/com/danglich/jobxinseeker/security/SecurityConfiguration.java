@@ -36,7 +36,8 @@ public class SecurityConfiguration {
 					configurer
 						.requestMatchers("/").permitAll()
 						.requestMatchers("/auth/**").permitAll()
-						.requestMatchers("/style/**").permitAll()
+						.requestMatchers("/static/**").permitAll()
+						.requestMatchers("/viec-lam/**").permitAll()
 						.anyRequest().authenticated()
 			
 				)
