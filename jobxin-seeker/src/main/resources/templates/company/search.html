@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Việc làm</title>
+     <link th:href="@{/static/style/home.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/static/style/output.css}" rel="stylesheet"  />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+    <div th:replace="home/header.html :: body"></div>
+    <div class="mb-[40px]">
+        <!-- Phần banner -->
+        <div class="bg-gradient-to-tr from-[#fbfffd] to-[#d9ffda] py-[40px]">
+            <div class="container flex">
+                <div class="flex-1">
+                    <h4 class="text-green-600 text-[26px] mb-[20px]">Tìm kiếm công ty phù hợp nhất với bạn</h4>                      
+                    <p class="text-[17px]">Tra cứu thông tin công ty và tìm kiếm nơi làm việc tốt nhất dành cho bạn</p>
+
+                    <!-- Form -->
+                    <form class="flex shadow-md mt-[36px] bg-white rounded-[24px] px-[12px] py-[10px] hover:border-[green!important] border-white border-solid border-[1px]">
+                        <div class="px-[12px] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                              </svg>
+                        </div>
+                        <div class="flex-1 mx-[8px]">
+                            <input class="w-full h-full outline-none" type="text" />
+                        </div>
+                        <button class="rounded-[8px] px-[8px] py-[3px] bg-[green] text-white font-[500]">Tìm kiếm</button>
+                    </form>
+                </div>
+                <div class="flex-1 flex items-end justify-end">
+                    <img class="w-[36%]" src="https://static.topcv.vn/v4/image/company-search/img-top.png?v=1.0.0" />
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="bg-[#f4f5f5] pb-[48px]">
+            <div class="container pt-[18px]">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <div class="bg-white rounded-[6px] px-[24px] py-[18px]">
+                            <p class="text-[15px]">
+                                Tìm thấy <span class="font-bold text-green-700">178</span> công ty phù hợp với yêu cầu của bạn
+                            </p>
+                            <div class="pt-[16px]"> 
+                                <div class="flex border-[1px] hover:border-[green!important] rounded-[8px] border-solid border-[#999] items-start gap-[18px] pl-[12px] pt-[16px] pr-[24px] pb-[28px]">
+                                    <div class="w-[80px] cursor-pointer flex items-center">
+                                        <img class="w-full object-cover" src="https://cdn-new.topcv.vn/unsafe/80x/https://static.topcv.vn/company_logos/Ypx58RhQzGaLwDESVP9a7ec1trP9mauJ_1653621447____9c4e54b2207926db8755bb0e86074996.png" />
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex gap-[8px] items-center">
+                                            <h4 class="text-[17px] m-[0]">H&H Capital</h4>
+                                            <div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#444" class="bi bi-dot" viewBox="0 0 16 16">
+                                                    <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                                                  </svg>
+                                            </div>
+                                            <span>Đang tuyển <span class="font-bold">0</span> vị trí</span>
+                                        </div>
+                                        <div class="py-[8px]">
+                                            <p>
+                                                <span class="">Trụ sở chính : </span>
+                                                <span>34 Vạn Bảo, Liễu Giai, Ba Đình, Hà Nội</span>
+                                            </p>
+                                        </div>
+                                        <p class="h-[48px] overflow-hidden">Nền tảng cho một doanh nghiệp phát triển là xã hội. H&H Global Việt Nam cam kết liên tục đổi mới, cam kết liên tục tái đầu tư lại cho...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="bg-white rounded-[8px] px-[12px] pt-[16px] pb-[24px]">
+                            <h4 class="font-bold text-[18px] text-green-700">Nhà tuyển dụng hàng đầu</h4>
+
+                            <div class="row mt-[16px]">
+                                <div class="col-6 flex mb-[24px] items-center justify-center">
+                                    <div class="cursor-pointer border-[1px] w-[88px] h-[88px] border-solid border-[#888] hover:border-[green!important] flex items-center justify-center rounded-full">
+                                        <img class="w-[70%] h-[70%] object-cover rounded-[10px]" src="https://cdn-new.topcv.vn/unsafe/60x/https://static.topcv.vn/company_logos/tap-doan-cong-nghiep-vien-thong-quan-doi-6417bb41bf793.jpg" />
+
+                                    </div>
+                                </div>
+                                <div class="col-6 flex mb-[24px] items-center justify-center">
+                                    <div class="cursor-pointer border-[1px] w-[88px] h-[88px] border-solid border-[#888] hover:border-[green!important] flex items-center justify-center rounded-full">
+                                        <img class="w-[70%] h-[70%] object-cover rounded-[10px]" src="https://cdn-new.topcv.vn/unsafe/60x/https://static.topcv.vn/company_logos/tap-doan-cong-nghiep-vien-thong-quan-doi-6417bb41bf793.jpg" />
+
+                                    </div>
+                                </div>
+                                <div class="col-6 flex mb-[24px] items-center justify-center">
+                                    <div class="cursor-pointer border-[1px] w-[88px] h-[88px] border-solid border-[#888] hover:border-[green!important] flex items-center justify-center rounded-full">
+                                        <img class="w-[70%] h-[70%] object-cover rounded-[10px]" src="https://cdn-new.topcv.vn/unsafe/60x/https://static.topcv.vn/company_logos/tap-doan-cong-nghiep-vien-thong-quan-doi-6417bb41bf793.jpg" />
+
+                                    </div>
+                                </div>
+                                <div class="col-6 flex mb-[24px] items-center justify-center">
+                                    <div class="cursor-pointer border-[1px] w-[88px] h-[88px] border-solid border-[#888] hover:border-[green!important] flex items-center justify-center rounded-full">
+                                        <img class="w-[70%] h-[70%] object-cover rounded-[10px]" src="https://cdn-new.topcv.vn/unsafe/60x/https://static.topcv.vn/company_logos/tap-doan-cong-nghiep-vien-thong-quan-doi-6417bb41bf793.jpg" />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+	
+    
+    
+    
+    
+    
+    
+</body>
+</html>

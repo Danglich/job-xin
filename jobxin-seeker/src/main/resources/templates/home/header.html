@@ -2,52 +2,78 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link th:href="@{static/style/output.css}" rel="stylesheet"  />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
 </head>
 <body>
+    <header class="flex gap-[24px] items-center h-[72px] px-[24px] bg-white">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Tìm kiếm việc làm</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Trang chủ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Việc làm</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Ứng viên</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Liên hệ</a>
-                </li>
-            </ul>
-        </div>
+        <a th:href="@{/}" class="w-[180px] block">
+            <img class="w-full h-full object-cover"  src="https://static.topcv.vn/v4/image/logo/topcv-logo-tet-holiday.png">
+        </a>
+
+        <ul class="flex-1 m-[0] flex gap-[16px] font-[500] items-center"> 
+            <li class="px-[12px] group relative py-[12px]">
+                <a class="text-[#444] hover:text-[green] no-underline" th:href="@{/viec-lam}">
+                    Việc làm
+                </a>
+
+                <ul class="absolute hidden group-hover:block top-[90%]  shadow-md bg-white rounded-[8px] p-[16px] w-[400px]">
+                    <li class="mb-[12px]">
+                        <a th:href="@{/viec-lam}" class="block rounded-[2px] group cursor-pointer hover:text-[green] flex gap-[14px] items-center h-[40px] bg-[#f4f5f5] px-[12px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                              </svg>
+                            <span class="group-hover:text-[green]">Tìm việc làm </span>
+                        </a>
+                    </li>
+                    <li class="mb-[12px]">
+                        <a  th:href="@{/lich-su-ung-tuyen}" class="block rounded-[2px] group cursor-pointer hover:text-[green] flex gap-[14px] items-center h-[40px] bg-[#f4f5f5] px-[12px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-bag-check" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+                              </svg>
+                            <span class="group-hover:text-[green]">Lịch sử ứng tuyển </span>
+                        </a>
+                    </li>
+                    <li class="mb-[12px]">
+                        <a  th:href="@{/viec-lam/da-luu}" class="block rounded-[2px] group cursor-pointer hover:text-[green] flex gap-[14px] items-center h-[40px] bg-[#f4f5f5] px-[12px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-heart" viewBox="0 0 16 16">
+                                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                              </svg>
+                            <span class="group-hover:text-[green]">Việc làm đã lưu </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="px-[12px] group relative py-[12px]">
+                <a class="text-[#444] hover:text-[green] no-underline" th:href="@{/viec-lam}">
+                    Hồ sơ & CV
+                </a>
+            </li>
+            <li class="px-[12px] group relative py-[12px]">
+                <a class="text-[#444] hover:text-[green] no-underline" th:href="@{/cong-ty}">
+                    Công ty
+                </a>
+            </li>
+        </ul>
+
+        <div >
             <div sec:authorize="isAuthenticated()">
-            	<form th:action="@{logout}" method="post" >
-        			<input type="submit" class="btn btn-info" value="Đăng xuất" />
-            	
-            	</form>
-    		</div>
-    		<div sec:authorize="!isAuthenticated()">
-            	<a class="btn btn-info" th:href="@{auth/login}" >Đăng nhập</a>
-    		</div>
-    </nav>
-    
-    
-    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+                <form th:action="@{logout}" method="post" >
+                    <input type="submit" class="btn btn-info" value="Đăng xuất" />
+                
+                </form>
+            </div>
+            <div sec:authorize="!isAuthenticated()">
+                <a class="btn btn-info" th:href="@{auth/login}" >Đăng nhập</a>
+            </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+        </div>
+
+    </header>
     
     
+    
+   
     
 </body>
 </html>

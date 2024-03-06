@@ -20,5 +20,11 @@ public class CompanyController {
 		
 		return "company/detail";
 	}
+	
+	@GetMapping("/tim-kiem") 
+	public String searchCompany() {
+		
+		return "company/search";
+	}
 
 }
