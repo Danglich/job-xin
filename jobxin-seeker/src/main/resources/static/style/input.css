@@ -14,6 +14,12 @@
     -webkit-line-clamp: 1;
 }
 
+.text-over-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
 p {
     margin: 0 !important;
 }

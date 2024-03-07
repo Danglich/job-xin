@@ -3,61 +3,21 @@
 <head>
     <title>Tìm kiếm việc làm</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .carousel-item img {
-            border-radius: 24px;
-        }
-    </style>
+    
 </head>
 <body>
 
-	<div class="banner-container mb-[24px]">
+	<div class="banner-container pb-[24px]">
 	 <div class="container pt-[12px]">
         <div class="mt-[36px] my-[24px]">
             <h1 class="text-center text-[30px] text-[green]">Chào mừng bạn ! Tìm kiếm việc làm mới nhất trên toàn quốc</h1>
             <p class="lead text-center">Tiếp cận với hàng nghìn tin tuyển dụng mỗi ngày từ các công ty uy tín trên cả nước</p>
+             
             
-            
-            <form action="/filter_jobs" method="GET" class="form-inline seach-form mt-[36px] mb-[28px]">
-                <div class="form-group">
-                  <label class="sr-only" for="search"><i class="glyphicon glyphicon-search"></i></label>
-                  <input type="text" id="search" name="search" class="form-control" placeholder="Nhập nội dung tìm kiếm">
-                </div>
-              
-                <div class="form-group">
-                  <label class="sr-only" for="location"><i class="glyphicon glyphicon-map-marker"></i></label>
-                  <select id="location" name="location" class="form-control">
-                    <option value="">Tất cả tỉnh thành</option>
-                    <option value="Hà Nội">Hà Nội</option>
-                    <option value="Hồ Chí Minh">Hồ Chí Minh</option>
-                    <option value="Đà Nẵng">Đà Nẵng</option>
-                    <!-- Thêm các tỉnh thành khác vào đây -->
-                  </select>
-                </div>
-              
-                <div class="form-group">
-                  <label class="sr-only" for="experience"><i class="glyphicon glyphicon-briefcase"></i></label>
-                  <select id="experience" name="experience" class="form-control">
-                    <option value="">Tất cả kinh nghiệm</option>
-                    <option value="Chưa có kinh nghiệm">Chưa có kinh nghiệm</option>
-                    <option value="Dưới 1 năm">Dưới 1 năm</option>
-                    <option value="Trên 1 năm">Trên 1 năm</option>
-                  </select>
-                </div>
-              
-                <div class="form-group">
-                  <label class="sr-only" for="salary"><i class="glyphicon glyphicon-usd"></i></label>
-                  <select id="salary" name="salary" class="form-control">
-                    <option value="">Tất cả mức lương</option>
-                    <option value="Dưới 5 triệu">Dưới 5 triệu</option>
-                    <option value="Trên 5 triệu">Trên 5 triệu</option>
-                  </select>
-                </div>
-              
-                <button type="submit" class="btn btn-primary">Lọc công việc</button>
-              </form>
         </div>
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <!-- Form tìm việc -->
+        <div th:replace="home/search-form.html :: body"></div>
+        <div id="carouselExampleIndicators" class="carousel slide mt-[32px]" data-ride="carousel">
             <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                 <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>

@@ -7,10 +7,18 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+
     <div th:replace="home/header.html :: body"></div>
-   
-    
-    <div th:replace="home/slide-banner.html :: body"></div>
+
+    <div class="bg-gradient-to-l from-[#4aa143] to-[#2c3b5c] py-[36px]">
+        <div class="container">
+            <div th:replace="home/search-form.html :: body"></div>
+            <div class="inline-block px-[18px] bg-[#365c65] py-[8px] rounded-[8px] mt-[20px] text-center text-white">
+                Tổng <span class="text-[green] font-bold">9</span> kết quả
+            </div>
+        </div>
+
+    </div>
 
     <!-- Phần content -->
     <div class="bg-[#f4f5f5]">
@@ -25,14 +33,79 @@
                     <li class="mx-[6px]">Java Developer</li>
                 </ul>
             </nav>
+
+            <!-- Gợi ý việc làm -->
+            <div class="bg-white mb-[32px] rounded-[8px] px-[16px] py-[16px]">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-[green] text-[23px] mb-[24px] font-bold">Gợi ý việc làm phù hợp</h1>
+                    <a href="" class="text-[#444]">Xem tất cả</a>
+                </div>
+                
+                <!-- Danh sách việc làm phù hợp  -->
+                <div class="row">
+                    <div class="col-sm-6 mb-[18px]">
+                        <div class="flex p-[12px] cursor-pointer rounded-[8px] border-[1px] border-solid border-[#ccc] hover:bg-[#f4f5f5]">
+                            <div class="w-[80px] mr-[16px] h-[80px] flex items-center justify-center flex-shrink-0 rounded-[8px] border-[1px] border-[#ccc] border-solid">
+                                <img class="w-[100%] rounded-[8px] " src="https://cdn-new.topcv.vn/unsafe/150x/https://static.topcv.vn/company_logos/JuHiMkCc5e5ieyWvd4fmob0gKLSXNXOG_1708317098____e2afbd959c86b1234e36ba08894d9476.jpg" />
+                            </div>
+    
+                            <div>
+                                <h4 class="text-[17px] hover:text-[green] text-over-2 overflow-hidden">Biên Tập Viên Nội Dung Video (Content Creator), Thu Nhập Lên Đến 20 Triệu Tại Hà Nội</h4>
+                                <h4 class="text-[15px] font-[400] text-over overflow-hidden">CÔNG TY CỔ PHẦN MST ENTERTAINMENT</h4>
+                                <div class="flex gap-[12px] mt-[10px]">
+                                    <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Hà Nội</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-column items-end justify-between min-w-[150px]" >
+                                <p class="font-[500] text-[green]">10 - 12 triệu</p>
+                                <div class="flex gap-[10px]">
+                                    <button class="opacity-[0.7] text-white text-[14px] h-[28px] px-[12px] rounded-[3px] bg-[green]">Ứng tuyển</button>
+                                    <button class="px-[6px] bg-[#effbef] rounded-[3px]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#008000" class="bi bi-heart" viewBox="0 0 16 16">
+                                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                                          </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-[18px]">
+                        <div class="flex p-[12px] cursor-pointer rounded-[8px] border-[1px] border-solid border-[#ccc] hover:bg-[#f4f5f5]">
+                            <div class="w-[80px] mr-[16px] h-[80px] flex items-center justify-center flex-shrink-0 rounded-[8px] border-[1px] border-[#ccc] border-solid">
+                                <img class="w-[100%] rounded-[8px] " src="https://cdn-new.topcv.vn/unsafe/150x/https://static.topcv.vn/company_logos/JuHiMkCc5e5ieyWvd4fmob0gKLSXNXOG_1708317098____e2afbd959c86b1234e36ba08894d9476.jpg" />
+                            </div>
+    
+                            <div>
+                                <h4 class="text-[17px] hover:text-[green] text-over-2 overflow-hidden">Biên Tập Viên Nội Dung Video (Content Creator), Thu Nhập Lên Đến 20 Triệu Tại Hà Nội</h4>
+                                <h4 class="text-[15px] font-[400] text-over overflow-hidden">CÔNG TY CỔ PHẦN MST ENTERTAINMENT</h4>
+                                <div class="flex gap-[12px] mt-[10px]">
+                                    <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Hà Nội</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-column items-end justify-between min-w-[150px]" >
+                                <p class="font-[500] text-[green]">10 - 12 triệu</p>
+                                <div class="flex gap-[10px]">
+                                    <button class="opacity-[0.7] text-white text-[14px] h-[28px] px-[12px] rounded-[3px] bg-[green]">Ứng tuyển</button>
+                                    <button class="px-[6px] bg-[#effbef] rounded-[3px]">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#008000" class="bi bi-heart" viewBox="0 0 16 16">
+                                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                                          </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
     
             <div class="row">
                 <div class="col-sm-9 ">
 
                     <!-- Danh sách công việc -->
                     <div class="mb-[32px]">
-                        <div class="flex p-[12px] mb-[16px] cursor-pointer hover:border-[green] bg-white rounded-[8px] border-[1px] border-solid border-[#ccc] hover:bg-[#fff]">
-                            <div class="w-[100px] mr-[16px] h-[100px] flex items-center justify-center flex-shrink-0 rounded-[8px] border-[1px] border-[#ccc] border-solid">
+                        <div class="flex p-[12px] mb-[16px] cursor-pointer hover:border-[green] bg-white rounded-[8px] border-[1px] border-solid border-[#f5f5f5] shadow-sm hover:bg-[#fff]">
+                            <div class="w-[100px] mr-[16px] h-[100px] flex items-center justify-center flex-shrink-0 rounded-[8px] border-[1px] border-[#f5f5f5] border-solid">
                                 <img class="w-[100%] rounded-[8px] " src="https://cdn-new.topcv.vn/unsafe/150x/https://static.topcv.vn/company_logos/JuHiMkCc5e5ieyWvd4fmob0gKLSXNXOG_1708317098____e2afbd959c86b1234e36ba08894d9476.jpg" />
                             </div>
 
@@ -58,8 +131,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex p-[12px] mb-[16px] cursor-pointer hover:border-[green] bg-white rounded-[8px] border-[1px] border-solid border-[#ccc] hover:bg-[#fff]">
-                            <div class="w-[100px] mr-[16px] h-[100px] flex items-center justify-center flex-shrink-0 rounded-[8px] border-[1px] border-[#ccc] border-solid">
+                        <div class="flex p-[12px] mb-[16px] cursor-pointer hover:border-[green] bg-white rounded-[8px] border-[1px] border-solid border-[#f5f5f5]  shadow-sm hover:bg-[#fff]">
+                            <div class="w-[100px] mr-[16px] h-[100px] flex items-center justify-center flex-shrink-0 rounded-[8px] border-[1px] border-[#f5f5f5] border-solid">
                                 <img class="w-[100%] rounded-[8px] " src="https://cdn-new.topcv.vn/unsafe/150x/https://static.topcv.vn/company_logos/JuHiMkCc5e5ieyWvd4fmob0gKLSXNXOG_1708317098____e2afbd959c86b1234e36ba08894d9476.jpg" />
                             </div>
 
@@ -85,8 +158,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex p-[12px] mb-[16px] cursor-pointer hover:border-[green] bg-white rounded-[8px] border-[1px] border-solid border-[#ccc] hover:bg-[#fff]">
-                            <div class="w-[100px] mr-[16px] h-[100px] flex items-center justify-center flex-shrink-0 rounded-[8px] border-[1px] border-[#ccc] border-solid">
+                        <div class="flex p-[12px] mb-[16px] cursor-pointer hover:border-[green] bg-white rounded-[8px] border-[1px] border-solid border-[#f5f5f5] shadow-sm hover:bg-[#fff]">
+                            <div class="w-[100px] mr-[16px] h-[100px] flex items-center justify-center flex-shrink-0 rounded-[8px] border-[1px] border-[#f5f5f5] border-solid">
                                 <img class="w-[100%] rounded-[8px] " src="https://cdn-new.topcv.vn/unsafe/150x/https://static.topcv.vn/company_logos/JuHiMkCc5e5ieyWvd4fmob0gKLSXNXOG_1708317098____e2afbd959c86b1234e36ba08894d9476.jpg" />
                             </div>
 
