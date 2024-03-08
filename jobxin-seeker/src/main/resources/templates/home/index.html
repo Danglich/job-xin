@@ -16,18 +16,16 @@
     
     <div th:replace="home/slide-banner.html :: body"></div>
 
-     
-
-    <!-- Việc làm hấp dẫn -->
+     <!-- Việc làm mới nhất -->
     <div class="bg-[#f3f5f7]">
         <div class="container py-[24px]">
             <div class="flex items-center justify-between">
-                <h1 class="text-[green] text-[26px] mb-[24px] font-bold">Việc làm tốt nhất</h1>
-                <a href="" class="text-[#444]">Xem tất cả</a>
+                <h1 class="text-[green] text-[26px] mb-[24px] font-bold">Việc làm mới nhất</h1>
+                <a th:href="@{/viec-lam-moi-nhat}" class="text-[#444]">Xem tất cả</a>
             </div>
             <div class="row">
                 <div th:each="job : ${jobs}" class="col-sm-6 mb-[16px]">
-                    <div class="border-[1px] border-solid border-white hover:bg-[#f6f6f6!important] hover:border-[#ccc!important] group cursor-pointer  px-[18px] py-[12px] bg-white rounded-[8px]">
+                    <div class="border-[1px] shadow-md border-solid border-white hover:bg-[#f6f6f6!important] hover:border-[#ccc!important] group cursor-pointer  px-[18px] py-[12px] bg-white rounded-[8px]">
                         <div class="flex overflow-hidden items-center justify-center" >
                             <img th:src="${job.avatar}" class="card-img-top rounded-[4px]  w-[40px!important] h-[40px]" alt="Avatar công ty">
                             <div class="ml-[16px]">
@@ -131,6 +129,46 @@
             </div>
         </div>
     </div>
+
+    <!-- Việc làm tốt nhất -->
+    <div class="bg-[#f3f5f7]">
+        <div class="container py-[24px]">
+            <div class="flex items-center justify-between">
+                <h1 class="text-[green] text-[26px] mb-[24px] font-bold">Việc làm tốt nhất</h1>
+                <a th:href="@{/viec-lam-tot-nhat}" class="text-[#444]">Xem tất cả</a>
+            </div>
+            <div class="row">
+                <div th:each="job : ${jobs}" class="col-sm-6 mb-[16px]">
+                    <div class="border-[1px] shadow-md border-solid border-white hover:bg-[#f6f6f6!important] hover:border-[#ccc!important] group cursor-pointer  px-[18px] py-[12px] bg-white rounded-[8px]">
+                        <div class="flex overflow-hidden items-center justify-center" >
+                            <img th:src="${job.avatar}" class="card-img-top rounded-[4px]  w-[40px!important] h-[40px]" alt="Avatar công ty">
+                            <div class="ml-[16px]">
+                                <h5 th:text="${job.title}" class="group-hover:text-[green] font-[500] text-over leading-[17px] h-[17px]  text-[17px]  overflow-hidden "></h5>
+                                <p th:text="${job.companyName}" class="overflow-hidden text-over text-[14px] " ></p>
+    
+                            </div>
+    
+                        </div>
+                        <div class="flex mt-[16px] items-center justify-between">
+                            <div class="flex ">
+                                <p th:text="${job.salary}" class="bg-[#f3f5f7] text-[black] rounded-[4px] px-[8px] py-[1px] text-[13px] mr-[6px!important]"></p>
+                                <p th:text="${job.salary}" class="bg-[#f3f5f7] text-[black]  rounded-[4px] px-[8px] py-[1px] text-[13px] mr-[6px!important]"></p>
+    
+                            </div>
+                            <div class="hover:text-[green]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-heart" viewBox="0 0 16 16">
+                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                                  </svg>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
 
     <!-- Gợi ý việc làm phù hợp -->
     <div class="my-[32px]">
