@@ -32,6 +32,12 @@ public class JobSeekers extends DateAudit {
 	@Column(name = "password")
 	private String password;
 	
+	@Column(name = "full_name")
+	private String fullName;
+	
+	@Column(name = "phone_number")
+	private String phoneNumber;
+	
 	@Column(name = "code")
 	private String code;
 	

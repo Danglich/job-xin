@@ -2,10 +2,12 @@ package com.danglich.jobxinseeker.service.impl;
 
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.danglich.jobxinseeker.dto.RegisterDTO;
+import com.danglich.jobxinseeker.dto.SeekerInfoDTO;
 import com.danglich.jobxinseeker.exception.AuthException;
 import com.danglich.jobxinseeker.model.JobSeekers;
 import com.danglich.jobxinseeker.repository.JobSeekerRepository;
@@ -35,6 +37,16 @@ public class JobSeekerServiceImpl implements JobSeekerService{
 								.password(passwordEncoder.encode(registerDTO.getPassword()))
 								.enabled(true)
 								.build());
+	}
+
+	@Override
+	public SeekerInfoDTO getSeekerInfo(String username) {
+		
+		JobSeekers seeker = repository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Not found user"));
+		
+		SeekerInfoDTO seekerInfo = new SeekerInfoDTO(seeker.getFullName(), seeker.getEmail() , seeker.getPhoneNumber());
+		
+		return seekerInfo;
 	}
 
 }
