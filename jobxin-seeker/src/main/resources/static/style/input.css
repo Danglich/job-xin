@@ -6,6 +6,10 @@
     color: #344563;
 }
 
+a {
+    text-decoration: none !important; /* Loại bỏ dấu gạch dưới */
+  }
+
 
 
 .text-over{

@@ -1,10 +1,14 @@
 package com.danglich.jobxinseeker.model;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,14 +16,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
-@Builder
-@EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "seeker")
-public class JobSeekers extends DateAudit {
+@Entity
+@Builder
+@EqualsAndHashCode(callSuper=false)
+@Table(name = "company")
+public class Company extends DateAudit {
 	
 	/**
 	 * 
@@ -31,27 +35,29 @@ public class JobSeekers extends DateAudit {
 	@Column(name = "id")
 	private int id;
 	
+	@Column(name = "name")
+	private String name;
+	
 	@Column(name = "email")
 	private String email;
 	
 	@Column(name = "password")
 	private String password;
 	
-	@Column(name = "full_name")
-	private String fullName;
-	
-	@Column(name = "phone_number")
-	private String phoneNumber;
-	
-	@Column(name = "code")
-	private String code;
-	
 	@Column(name = "avatar")
-	private String avatar; 
+	private String avatar;
 	
-	@Column(name = "enabled")
-	private boolean enabled;
+	@Column(name = "description")
+	private String description;
 	
+	@Column(name = "address")
+	private String address;
+	
+	@Column(name = "scale")
+	private String scale;
+	
+	@OneToMany(mappedBy = "company")
+	private List<Jobs> jobs;
 	
 
 }

@@ -44,7 +44,7 @@
                 <div th:replace="home/search-form.html :: body"></div>
                 
                 <div class="my-[24px]">
-                    <p>Tìm thấy <span class="font-bold text-[green]">88</span> việc làm phù hợp với yêu cầu của bạn.</p>
+                    <p>Tìm thấy <span class="font-bold text-[green]" th:text="${totalElements}"></span> việc làm phù hợp với yêu cầu của bạn.</p>
                 </div>
 
                 <hr>
@@ -53,20 +53,18 @@
                     <div class="col-sm-9 ">
     
                         <!-- Danh sách công việc -->
-                        <div class="mb-[32px]">
-                            <div class="flex p-[12px] mb-[16px] cursor-pointer hover:border-[green] bg-white rounded-[8px] border-[1px] border-solid border-[#f5f5f5] shadow-sm hover:bg-[#fff]">
+                        <div  th:each="job : ${jobs}" class="mb-[32px]">
+                            <a th:href="@{/viec-lam/{jobId}(jobId=${job.id})}" class="flex py-[16px] px-[12px] mb-[16px] cursor-pointer hover:border-[green] bg-white rounded-[8px] border-[1px] border-solid border-[#f5f5f5] shadow-sm hover:bg-[#fff]">
                                 <div class="w-[100px] mr-[16px] h-[100px] flex items-center justify-center flex-shrink-0 rounded-[8px] border-[1px] border-[#f5f5f5] border-solid">
-                                    <img class="w-[100%] rounded-[8px] " src="https://cdn-new.topcv.vn/unsafe/150x/https://static.topcv.vn/company_logos/JuHiMkCc5e5ieyWvd4fmob0gKLSXNXOG_1708317098____e2afbd959c86b1234e36ba08894d9476.jpg" />
+                                    <img class="w-[100%] rounded-[8px] " th:src="${job.company.avatar}" />
                                 </div>
     
-                                <div>
-                                    <h4 class="text-[17px] hover:text-[green]">Biên Tập Viên Nội Dung Video (Content Creator), Thu Nhập Lên Đến 20 Triệu Tại Hà Nội</h4>
-                                    <h4 class="text-[15px] font-[400]">CÔNG TY CỔ PHẦN MST ENTERTAINMENT</h4>
-                                    <div class="flex gap-[12px] mt-[10px]">
+                                <div class="flex-1">
+                                    <h4 th:text="${job.title}" class="text-[17px] hover:text-[green]"></h4>
+                                    <h4 th:text="${job.company.name}" class="block text-[15px] font-[400]"></h4>
+                                    <div class="flex gap-[12px] mt-[24px]">
                                         <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Hà Nội</p>
-                                        <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Còn <strong>6</strong> ngày để ứng tuyển</p>
-                                        
-    
+                                        <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Còn <strong th:text="${@timeUtil.daysOfExpired(job.expiredAt)}"></strong> ngày để ứng tuyển</p>
                                     </div>
                                 </div>
                                 <div class="flex flex-column items-end justify-between min-w-[150px]" >
@@ -80,61 +78,33 @@
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="flex p-[12px] mb-[16px] cursor-pointer hover:border-[green] bg-white rounded-[8px] border-[1px] border-solid border-[#f5f5f5]  shadow-sm hover:bg-[#fff]">
-                                <div class="w-[100px] mr-[16px] h-[100px] flex items-center justify-center flex-shrink-0 rounded-[8px] border-[1px] border-[#f5f5f5] border-solid">
-                                    <img class="w-[100%] rounded-[8px] " src="https://cdn-new.topcv.vn/unsafe/150x/https://static.topcv.vn/company_logos/JuHiMkCc5e5ieyWvd4fmob0gKLSXNXOG_1708317098____e2afbd959c86b1234e36ba08894d9476.jpg" />
-                                </div>
-    
-                                <div>
-                                    <h4 class="text-[17px] hover:text-[green]">Biên Tập Viên Nội Dung Video (Content Creator), Thu Nhập Lên Đến 20 Triệu Tại Hà Nội</h4>
-                                    <h4 class="text-[15px] font-[400]">CÔNG TY CỔ PHẦN MST ENTERTAINMENT</h4>
-                                    <div class="flex gap-[12px] mt-[10px]">
-                                        <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Hà Nội</p>
-                                        <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Còn <strong>6</strong> ngày để ứng tuyển</p>
+                            </a>
+                            
+                        </div>
+
+                        <!-- Phần phân trang -->
+                        <div class="pagination">
+                            <ul class="flex items-center gap-[16px]">
+                                <li class="" th:if="${currentPage > 0}">
+                                    <a class="block  px-[16px] py-[8px] rounded hover:bg-[#ccc] border border-[green] " th:href="@{/viec-lam-moi-nhat(page=${currentPage - 1})}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                                          </svg>
                                         
-    
-                                    </div>
-                                </div>
-                                <div class="flex flex-column items-end justify-between min-w-[150px]" >
-                                    <p class="font-[500] text-[green]">10 - 12 triệu</p>
-                                    <div class="flex gap-[10px]">
-                                        <button class="opacity-[0.7] text-white text-[14px] h-[28px] px-[12px] rounded-[3px] bg-[green]">Ứng tuyển</button>
-                                        <button class="px-[6px] bg-[#effbef] rounded-[3px]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#008000" class="bi bi-heart" viewBox="0 0 16 16">
-                                                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
-                                              </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex p-[12px] mb-[16px] cursor-pointer hover:border-[green] bg-white rounded-[8px] border-[1px] border-solid border-[#f5f5f5] shadow-sm hover:bg-[#fff]">
-                                <div class="w-[100px] mr-[16px] h-[100px] flex items-center justify-center flex-shrink-0 rounded-[8px] border-[1px] border-[#f5f5f5] border-solid">
-                                    <img class="w-[100%] rounded-[8px] " src="https://cdn-new.topcv.vn/unsafe/150x/https://static.topcv.vn/company_logos/JuHiMkCc5e5ieyWvd4fmob0gKLSXNXOG_1708317098____e2afbd959c86b1234e36ba08894d9476.jpg" />
-                                </div>
-    
-                                <div>
-                                    <h4 class="text-[17px] hover:text-[green]">Biên Tập Viên Nội Dung Video (Content Creator), Thu Nhập Lên Đến 20 Triệu Tại Hà Nội</h4>
-                                    <h4 class="text-[15px] font-[400]">CÔNG TY CỔ PHẦN MST ENTERTAINMENT</h4>
-                                    <div class="flex gap-[12px] mt-[10px]">
-                                        <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Hà Nội</p>
-                                        <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Còn <strong>6</strong> ngày để ứng tuyển</p>
-                                        
-    
-                                    </div>
-                                </div>
-                                <div class="flex flex-column items-end justify-between min-w-[150px]" >
-                                    <p class="font-[500] text-[green]">10 - 12 triệu</p>
-                                    <div class="flex gap-[10px]">
-                                        <button class="opacity-[0.7] text-white text-[14px] h-[28px] px-[12px] rounded-[3px] bg-[green]">Ứng tuyển</button>
-                                        <button class="px-[6px] bg-[#effbef] rounded-[3px]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#008000" class="bi bi-heart" viewBox="0 0 16 16">
-                                                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
-                                              </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                                    </a>
+                                </li>
+                                <li class="" th:each="page : ${#numbers.sequence(1, totalPages)}">
+                                    <a th:if="${currentPage == page - 1}" class="block bg-[green] text-[#fff!important] px-[16px] rounded  py-[8px]  w-full h-full" th:href="@{/viec-lam-moi-nhat(page=${page - 1})}" th:text="${page}"></a>
+                                    <a th:if="${currentPage != page - 1}" class="block hover:bg-[#ccc] px-[16px] rounded  py-[8px]  w-full h-full" th:href="@{/viec-lam-moi-nhat(page=${page - 1})}" th:text="${page}"></a>
+                                </li>
+                                <li th:if="${currentPage < totalPages - 1}">
+                                    <a class="block  px-[16px] py-[8px] rounded hover:bg-[#ccc] border border-[green]" th:href="@{/viec-lam-moi-nhat(page=${currentPage + 1})}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                                          </svg>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                         
@@ -145,6 +115,8 @@
 
             </div>
         
+
+            
     
         </div>
 

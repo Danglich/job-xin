@@ -15,8 +15,8 @@ public class CompanyController {
 		return "company/list";
 	}
 	
-	@GetMapping("/{company_id}")
-	public String showCompanyDetail(@PathVariable(name = "company_id") int companyId) {
+	@GetMapping("/{companyId}")
+	public String showCompanyDetail(@PathVariable(name = "companyId") int companyId) {
 		
 		return "company/detail";
 	}

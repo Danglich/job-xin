@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.danglich.jobxinseeker.dto.LoginDTO;
 import com.danglich.jobxinseeker.dto.RegisterDTO;
-import com.danglich.jobxinseeker.model.Student;
 import com.danglich.jobxinseeker.service.JobSeekerService;
 
 import jakarta.validation.Valid;
