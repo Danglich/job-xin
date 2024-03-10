@@ -1,6 +1,6 @@
 package com.danglich.jobxinseeker.controller;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ public class JobController {
 	@GetMapping("/viec-lam")
 	public String showJobPage() {
 		
-		return "job-list/index";
+		return "job/index";
 	}
 	
 	@GetMapping("/viec-lam-tot-nhat")
@@ -43,7 +43,6 @@ public class JobController {
         model.addAttribute("currentPage", jobPage.getNumber());
         model.addAttribute("totalPages", jobPage.getTotalPages());
         model.addAttribute("totalElements", jobPage.getTotalElements());
-		LocalDateTime d =LocalDateTime.now();
 		
         
 		return "job/new-job";
@@ -56,8 +55,19 @@ public class JobController {
 	}
 
 	@GetMapping("/viec-lam/{jobId}")
-	public String showJobDetail(@PathVariable(name = "jobId") int jobId) {
+	public String showJobDetail(@PathVariable(name = "jobId") int jobId , Model theModel) {
 		
-		return "job-detail/index";
+		Jobs job = service.getById(jobId);
+		theModel.addAttribute("job", job);
+		
+		List<Jobs> suggestJobs = service.getSuggestJobsByCategory(job.getCompany().getId());
+		theModel.addAttribute("suggestJobs", suggestJobs);
+		
+		List<Jobs> suggestJobsByUser = service.getTop5SuggestJobs();
+		theModel.addAttribute("suggestJobsByUser", suggestJobsByUser);
+		
+		System.out.println(suggestJobsByUser.size());
+		
+		return "job/job-detail";
 	}
 }

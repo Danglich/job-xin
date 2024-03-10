@@ -20,16 +20,16 @@
                 <ul class="flex text-[17px]">
                     <li><a th:href="@{/}" class="text-[green] font-[500] mr-[6px] hover:no-underline hover:text-[green]">Trang chủ</a></li>
                     <span>/</span>
-                    <li class="mx-[6px]"><a th:href="@{/category/software}"  class="text-[green] font-[500] mr-[6px] hover:no-underline hover:text-[green]">Công nghệ phần mềm</a></li>
+                    <li  class="mx-[6px]"><a th:text="${job.category.name}" th:href="@{/category/software}"  class="text-[green] font-[500] mr-[6px] hover:no-underline hover:text-[green]"></a></li>
                     <span>/</span>
-                    <li class="mx-[6px]">Java Developer</li>
+                    <li th:text="${job.title}" class="mx-[6px]"></li>
                 </ul>
             </nav>
     
             <div class="row">
                 <div class="col-sm-8 ">
                     <div class="bg-white rounded-[10px] px-[24px] py-[16px]">
-                        <h2 class="font-bold text-[22px] leading-[30px]">Biên Tập Viên Nội Dung Video ( Content Creator ), Thu Nhập Lên Đến 18 Triệu Tại Hà Nội</h2>
+                        <h2 th:text="${job.title}" class="font-bold text-[22px] leading-[30px]"></h2>
                         <div class="flex justify-between mt-[18px] mb-[24px]">
                             <div class="flex items-center justify-center">
                                 <div class="w-[40px] mr-[12px] h-[40px] rounded-full bg-[green] flex items-center justify-center">
@@ -41,7 +41,7 @@
                                 </div>
                                 <div>
                                     <p>Mức lương</p>
-                                    <p class="font-bold">12-18 triệu</p>
+                                    <p class="font-bold"><span th:text="${job.salaryStart}"></span>-<span th:text="${job.salaryEnd}"></span> triệu</p>
                                 </div>
                             </div>
                             <div class="flex items-center justify-center">
@@ -52,7 +52,7 @@
                                 </div>
                                 <div>
                                     <p>Địa điểm</p>
-                                    <p class="font-bold">Hà Nội</p>
+                                    <p th:text="${job.address}" class="font-bold">Hà Nội</p>
                                 </div>
                             </div>
                             <div class="flex items-center justify-center">
@@ -63,7 +63,7 @@
                                 </div>
                                 <div>
                                     <p>Kinh nghiệm</p>
-                                    <p class="font-bold">Dưới 1 năm</p>
+                                    <p th:text="${job.experience.describe}" class="font-bold"></p>
                                 </div>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
                               </svg>
                               <span class="mx-[12px]">Hạn nộp hồ sơ: </span>
-                              <span>8/3/2024</span>
+                              <span th:text="${@timeUtil.format(job.expiredAt)}"></span>
                         </p>
 
                         <!-- Ứng tuyển btn -->
@@ -155,7 +155,7 @@
 
                         </div>
 
-                        <p>Hạn nộp hồ sơ: 22/03/2024</p>
+                        <p >Hạn nộp hồ sơ: <span  th:text="${@timeUtil.format(job.expiredAt)}"></span></p>
                         <hr>
                         <!-- Việc làm liên quan -->
                         <div class="mt-[20px]">
@@ -166,20 +166,18 @@
                             </div>
 
                             <!-- Danh sách việc làm liên quan -->
-                            <div>
-                                <div class="flex p-[12px] cursor-pointer rounded-[8px] border-[1px] border-solid border-[#ccc] hover:bg-[#f4f5f5]">
+                            <div th:each="job : ${suggestJobs}">
+                                <div class="flex p-[12px] shadow-md mb-[16px] cursor-pointer rounded-[8px] border-[1px] border-solid border-[#ccc] hover:bg-[#f4f5f5]">
                                     <div class="w-[100px] mr-[16px] h-[100px] flex items-center justify-center flex-shrink-0 rounded-[8px] border-[1px] border-[#ccc] border-solid">
-                                        <img class="w-[100%] rounded-[8px] " src="https://cdn-new.topcv.vn/unsafe/150x/https://static.topcv.vn/company_logos/JuHiMkCc5e5ieyWvd4fmob0gKLSXNXOG_1708317098____e2afbd959c86b1234e36ba08894d9476.jpg" />
+                                        <img class="w-[100%] rounded-[8px] " th:src="${job.company.avatar}" />
                                     </div>
 
                                     <div>
-                                        <h4 class="text-[17px] hover:text-[green]">Biên Tập Viên Nội Dung Video (Content Creator), Thu Nhập Lên Đến 20 Triệu Tại Hà Nội</h4>
-                                        <h4 class="text-[15px] font-[400]">CÔNG TY CỔ PHẦN MST ENTERTAINMENT</h4>
+                                        <a th:text="${job.title}" th:href="@{/viec-lam/{jobId}(jobId=${job.id})}" class="text-[17px] block mb-[10px] font-[500] text-[#344563] hover:text-[green]"></a>
+                                        <a th:href="@{/cong-ty/{companyId}(companyId=${job.company.id})}" th:text="${job.company.name}" class="text-[15px] text-[#344563]  font-[400] hover:text-[green]"></a>
                                         <div class="flex gap-[12px] mt-[10px]">
-                                            <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Hà Nội</p>
-                                            <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Còn <strong>6</strong> ngày để ứng tuyển</p>
-                                            
-
+                                            <p th:text="${job.address}" class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Hà Nội</p>
+                                            <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Còn <strong  th:text="${@timeUtil.daysOfExpired(job.expiredAt)}">6</strong> ngày để ứng tuyển</p>
                                         </div>
                                     </div>
                                     <div class="flex flex-column items-end justify-between min-w-[150px]" >
@@ -201,13 +199,13 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="bg-white rounded-[10px] py-[16px] px-[18px]">
-                        <div class="flex mb-[14px]">
+                        <a th:href="@{/cong-ty/{companyId}(companyId=${job.company.id})}" class="flex mb-[14px]">
                             <div class="w-[88px] mr-[12px] border-solid border-[1px] rounded-[8px] border-[#ccc] flex-shrink-0 h-[88px] flex items-center justify-center">
-                                <img class="w-[100%]  rounded-[8px]" src="https://cdn-new.topcv.vn/unsafe/80x/https://static.topcv.vn/company_logos/c4ANF5z0l4j7teSiwTsxdUQCExGH5lc9_1659515411____6a3858d166fd0e22595dac212412037f.png">
+                                <img class="w-[100%]  rounded-[8px]" th:src="${job.company.avatar}">
 
                             </div>
-                            <h4 class="text-[17px]">Công ty TNHH Kim Sa Groups</h4>
-                        </div>
+                            <h4 th:text="${job.company.name}" class="text-[17px]" ></h4>
+                        </a>
 
                         <div class="flex mb-[12px]">
                             <div class="w-[100px]  flex items-center">
@@ -216,7 +214,7 @@
                                 </svg>
                                 <span class="ml-[8px] text-[#777]">Quy mô : </span>
                             </div>
-                            <p>25-99 nhân viên</p>
+                            <p th:text="${job.company.scale}"></p>
                         </div>
                         <div class="flex mb-[12px] items-start">
                             <div class="w-[100px] flex-shrink-0  flex items-center">
@@ -225,29 +223,29 @@
                                   </svg>
                                 <span class="ml-[6px] text-[#777]">Địa điểm </span>
                             </div>
-                            <p>29 Lê Đại Hành, Hai Bà Trưng, Hà Nội</p>
+                            <p th:text="${job.company.address}">29 Lê Đại Hành, Hai Bà Trưng, Hà Nội</p>
                         </div>
                     </div>
 
                     <!-- việc làm gợi ý -->
                     <div class="bg-white rounded-[10px] px-[18px] py-[16px] mt-[24px]">
                         <h4 class="text-[18px] ">Gợi ý việc làm phù hợp</h4>
-                        <div>
-                            <div class="px-[8px] py-[12px] cursor-pointer mb-[12px] rounded-[6px] border-[1px] border-solid border-[#ccc]">
+                        <div th:each="job : ${suggestJobsByUser}">
+                            <a th:href="@{/viec-lam/{jobId}(jobId=${job.id})}" class="px-[8px] block shadow-md hover:bg-[#f5f5f5] py-[12px] cursor-pointer mb-[12px] rounded-[6px] border-[1px] border-solid border-[#ccc]">
                                 <div  class="flex">
                                     <div class="w-[50px] flex items-center justify-center mr-[8px] h-[50px] flex-shrink-0 ">
-                                        <img class="w-full" src="https://cdn-new.topcv.vn/unsafe/150x/https://static.topcv.vn/company_logos/a3YZzPjs66IwNceGow5IGdgqBKSHYagZ_1654254182____a3533496e4ace3e2344a341026de6a0b.jpg">
+                                        <img class="w-full" th:src="${job.company.avatar}">
 
                                     </div>
                                     <div>
-                                        <h4 class="text-over text-[15px] hover:text-[green] mb-[8px]">Intern/Fresher Java Developer</h4>
-                                        <p class="text-over text-[13px]">Công ty TNHH Mai Sa Groups</p>
+                                        <h4 th:text="${job.title}" class="text-over overflow-hidden text-[15px] hover:text-[green] mb-[8px]"></h4>
+                                        <p th:text="${job.company.name}" class="text-over text-[13px]"></p>
                                     </div>
                                 </div>
                                 <div class="flex items-center justify-between mt-[18px]">
                                     <div class="flex gap-[10px]">
-                                        <p class="text-[13px] px-[8px] rounded-[4px] bg-[#e4e4e4]">10 - 12 triệu</p>
-                                        <p class="text-[13px] px-[8px] rounded-[4px] bg-[#e4e4e4]">Hà Nội</p>
+                                        <p class="text-[13px] px-[8px] rounded-[4px] bg-[#e4e4e4]"><span th:text="${job.salaryStart}"></span> - <span th:text="${job.salaryEnd}"></span> triệu</p>
+                                        <p th:text="${job.address}" class="text-[13px] px-[8px] rounded-[4px] bg-[#e4e4e4]"></p>
 
                                     </div>
                                     <button class="px-[4px]">
@@ -256,7 +254,7 @@
                                           </svg>
                                     </button>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>

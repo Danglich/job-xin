@@ -49,4 +49,10 @@ public class JobSeekerServiceImpl implements JobSeekerService{
 		return seekerInfo;
 	}
 
+	@Override
+	public JobSeekers getByUsername(String username) {
+		
+		return repository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Not found user"));
+	}
+
 }

@@ -9,5 +9,7 @@ public interface JobSeekerService {
 	JobSeekers register(RegisterDTO registerDTO);
 	
 	SeekerInfoDTO getSeekerInfo(String username);
+	
+	JobSeekers getByUsername(String username);
 
 }

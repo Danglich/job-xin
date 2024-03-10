@@ -1,10 +1,19 @@
 package com.danglich.jobxinseeker.model;
 
+import java.util.List;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,6 +60,14 @@ public class JobSeekers extends DateAudit {
 	
 	@Column(name = "enabled")
 	private boolean enabled;
+	
+	
+	@ManyToMany(cascade = {CascadeType.PERSIST , CascadeType.MERGE , CascadeType.REFRESH , CascadeType.DETACH})
+	@JoinTable(
+	  name = "seeker_category", 
+	  joinColumns = @JoinColumn(name = "seeker_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "category_id"))
+	private List<Category> categories;
 	
 	
 

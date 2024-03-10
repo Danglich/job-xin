@@ -1,15 +1,21 @@
 package com.danglich.jobxinseeker.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
+import com.danglich.jobxinseeker.model.JobSeekers;
 import com.danglich.jobxinseeker.model.Jobs;
 import com.danglich.jobxinseeker.repository.JobRepository;
+import com.danglich.jobxinseeker.service.JobSeekerService;
 import com.danglich.jobxinseeker.service.JobService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 public class JobServiceImpl implements JobService{
 	
 	private final JobRepository repository;
+	
+	private final JobSeekerService seekerService;
 
 	@Override
 	public Page<Jobs> getNewestJob(int page) {
@@ -29,6 +37,31 @@ public class JobServiceImpl implements JobService{
 		Page<Jobs> jobPage = repository.findByExpiredAtAfter(LocalDateTime.now(), pageable);
 		
 		return jobPage;
+	}
+
+	@Override
+	public Jobs getById(int id) {
+		
+		return repository.findById(id).orElseThrow(() -> new ResourceAccessException("Not found job"));
+	}
+
+	@Override
+	public List<Jobs> getSuggestJobsByCategory(int categoryId) {
+		
+		return repository.findTop5ByCategoryId(categoryId);
+	}
+
+	@Override
+	public List<Jobs> getTop5SuggestJobs() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(authentication.isAuthenticated()) {
+			JobSeekers jobSeeker = seekerService.getByUsername(authentication.getName());
+			
+			return repository.findTop5ByCategoryInOrderByCreatedAtDesc(jobSeeker.getCategories());
+		}
+		
+		return repository.findTop5ByOrderByCreatedAtDesc();
 	}
 
 }
