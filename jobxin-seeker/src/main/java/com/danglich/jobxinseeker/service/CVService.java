@@ -8,5 +8,7 @@ import com.danglich.jobxinseeker.model.CV;
 public interface CVService {
 	
 	CV upload(MultipartFile file) throws IOException;
+	
+	CV getById(int id);
 
 }

@@ -36,7 +36,6 @@ public class JobController {
 	@GetMapping("/viec-lam-moi-nhat")
 	public String showNewJob(
 			@RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
             Model model) {
 		
 		Page<Jobs> jobPage = service.getNewestJob(page);

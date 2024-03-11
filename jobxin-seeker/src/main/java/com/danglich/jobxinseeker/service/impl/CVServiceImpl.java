@@ -3,6 +3,7 @@ package com.danglich.jobxinseeker.service.impl;
 import java.io.IOException;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.danglich.jobxinseeker.dto.ApplicationDTO;
@@ -42,6 +43,12 @@ public class CVServiceImpl implements CVService{
         	throw new IllegalArgumentException("File must PDF format");
         }
 		
+	}
+
+	@Override
+	public CV getById(int id) {
+		
+		return repository.findById(id).orElseThrow(() -> new ResourceAccessException("Not found the CV"));
 	}
 
 }
