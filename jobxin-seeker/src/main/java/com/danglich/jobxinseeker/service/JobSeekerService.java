@@ -11,5 +11,7 @@ public interface JobSeekerService {
 	SeekerInfoDTO getSeekerInfo(String username);
 	
 	JobSeekers getByUsername(String username);
+	
+	JobSeekers getCurrentUser();
 
 }

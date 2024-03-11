@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,6 +69,9 @@ public class JobSeekers extends DateAudit {
 	  joinColumns = @JoinColumn(name = "seeker_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private List<Category> categories;
+	
+	@OneToMany(mappedBy = "seeker")
+	private List<Application> applications;
 	
 	
 

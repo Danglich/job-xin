@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.danglich.jobxinseeker.dto.ApplicationDTO;
 import com.danglich.jobxinseeker.model.Jobs;
 import com.danglich.jobxinseeker.service.JobService;
 
@@ -66,8 +67,23 @@ public class JobController {
 		List<Jobs> suggestJobsByUser = service.getTop5SuggestJobs();
 		theModel.addAttribute("suggestJobsByUser", suggestJobsByUser);
 		
-		System.out.println(suggestJobsByUser.size());
-		
 		return "job/job-detail";
+	}
+	
+	
+	@GetMapping("/ung-tuyen/{jobId}")
+	public String showApplicationForm(@PathVariable(name = "jobId") int jobId , Model theModel) {
+		
+		Jobs job = service.getById(jobId);
+		theModel.addAttribute("job", job);
+		
+		List<Jobs> suggestJobsByUser = service.getTop5SuggestJobs();
+		theModel.addAttribute("suggestJobsByUser", suggestJobsByUser);
+		
+		ApplicationDTO application = new ApplicationDTO();
+		application.setJobId(job.getId());
+		theModel.addAttribute("application", application);
+		
+		return "application/application-form";
 	}
 }
