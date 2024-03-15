@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.danglich.jobxinseeker.dto.ChangePasswordDTO;
 import com.danglich.jobxinseeker.dto.SeekerInfoDTO;
@@ -38,6 +40,22 @@ public class SeekerController {
 		theModel.addAttribute("passwordDTO", passwordDTO);
 		
 		return "profile/change_password";
+	}
+	
+	@PostMapping("/save-job")
+	public String saveJob(@RequestParam(name = "jobId") int jobId) {
+		
+		seekerService.saveJob(jobId);
+		
+		return "redirect:viec-lam-da-luu";
+	}
+	
+	@PostMapping("/unsave-job")
+	public String unSaveJob(@RequestParam(name = "jobId") int jobId) {
+		
+		seekerService.unSaveJob(jobId);
+		
+		return "redirect:viec-lam-da-luu";
 	}
 
 }

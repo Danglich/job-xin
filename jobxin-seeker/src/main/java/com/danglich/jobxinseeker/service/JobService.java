@@ -16,5 +16,8 @@ public interface JobService {
 	List<Jobs> getSuggestJobsByCategory(int categoryId);
 	
 	List<Jobs> getTop5SuggestJobs();
+	
+	
+	List<Jobs> getJobsSaved();
 
 }

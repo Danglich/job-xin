@@ -3,6 +3,8 @@ package com.danglich.jobxinseeker.service.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +26,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JobServiceImpl implements JobService{
 	
-	private final JobRepository repository;
+	private JobRepository repository;
 	
-	private final JobSeekerService seekerService;
+	private JobSeekerService seekerService;
+	
+	@Autowired
+    public JobServiceImpl(@Lazy JobSeekerService seekerService, JobRepository repository) {
+        this.repository = repository;
+        this.seekerService = seekerService;
+    }
 
 	@Override
 	public Page<Jobs> getNewestJob(int page) {
@@ -62,6 +70,15 @@ public class JobServiceImpl implements JobService{
 		}
 		
 		return repository.findTop5ByOrderByCreatedAtDesc();
+	}
+
+
+	@Override
+	public List<Jobs> getJobsSaved() {
+		
+		JobSeekers seeker = seekerService.getCurrentUser();
+		
+		return seeker.getSavedJobs();
 	}
 
 }

@@ -49,7 +49,10 @@ public class JobController {
 	}
 	
 	@GetMapping("/viec-lam-da-luu")
-	public String showSavedJob() {
+	public String showSavedJob(Model theModel) {
+		List<Jobs> savedJobs =  service.getJobsSaved();
+		
+		theModel.addAttribute("savedJobs", savedJobs);
 		
 		return "job/saved";
 	}
@@ -85,4 +88,6 @@ public class JobController {
 		
 		return "application/application-form";
 	}
+	
+	
 }

@@ -1,5 +1,6 @@
 package com.danglich.jobxinseeker.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
@@ -13,8 +14,10 @@ import com.danglich.jobxinseeker.dto.RegisterDTO;
 import com.danglich.jobxinseeker.dto.SeekerInfoDTO;
 import com.danglich.jobxinseeker.exception.AuthException;
 import com.danglich.jobxinseeker.model.JobSeekers;
+import com.danglich.jobxinseeker.model.Jobs;
 import com.danglich.jobxinseeker.repository.JobSeekerRepository;
 import com.danglich.jobxinseeker.service.JobSeekerService;
+import com.danglich.jobxinseeker.service.JobService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +27,7 @@ public class JobSeekerServiceImpl implements JobSeekerService{
 	
 	private final JobSeekerRepository repository;
 	private final PasswordEncoder passwordEncoder;
+	private final JobService jobService;
 
 	@Override
 	public JobSeekers register(RegisterDTO registerDTO) {
@@ -66,6 +70,30 @@ public class JobSeekerServiceImpl implements JobSeekerService{
 		JobSeekers seeker = repository.findByEmail(authentication.getName()).orElseThrow(() -> new ResourceAccessException("Not found the user"));
 		
 		return seeker;
+	}
+
+	@Override
+	public void saveJob(int jobId) {
+		
+		Jobs job = jobService.getById(jobId);
+		JobSeekers seeker = this.getCurrentUser();
+		
+		seeker.saveJob(job);
+		
+		repository.save(seeker);
+		
+	}
+
+
+	@Override
+	public void unSaveJob(int jobId) {
+		Jobs job = jobService.getById(jobId);
+		JobSeekers seeker = this.getCurrentUser();
+		
+		seeker.unSaveJob(job);
+		
+		repository.save(seeker);
+		
 	}
 
 }

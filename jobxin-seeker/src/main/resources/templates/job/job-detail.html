@@ -78,18 +78,21 @@
 
                         <!-- Ứng tuyển btn -->
                         <div class="flex mt-[24px]">
-                            <button class="flex-1 mr-[16px] rounded-[6px] bg-[green] flex text-[green] items-center justify-center">
+                            <a th:href="@{/ung-tuyen/{jobId}(jobId=${job.id})}" class="flex-1 mr-[16px] rounded-[6px] bg-[green] flex text-[green] items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-send-fill" viewBox="0 0 16 16">
                                     <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
                                 </svg>
                                 <span class="font-[500] text-white ml-[8px]">Ứng tuyển ngay</span>
-                            </button>
-                            <button class="w-[130px] border-solid border-[1px] py-[7px] border-[green] rounded-[6px] flex text-[green] items-center justify-center font-[500]">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#008000" class="bi bi-heart" viewBox="0 0 16 16">
-                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
-                                  </svg>
-                                <span class="text-[green] ml-[8px]">Lưu tin</span>
-                            </button>
+                            </a>
+                            <form method="post" th:action="@{/save-job}">
+                                <input type="hidden" name="jobId" th:value="${job.id}" />
+                                <button class="w-[130px] border-solid border-[1px] py-[7px] border-[green] rounded-[6px] flex text-[green] items-center justify-center font-[500]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#008000" class="bi bi-heart" viewBox="0 0 16 16">
+                                        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
+                                      </svg>
+                                    <span class="text-[green] ml-[8px]">Lưu tin</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
 
@@ -146,9 +149,9 @@
                         </div>
 
                         <div class="flex mb-[16px]">
-                            <button class="bg-[green] mr-[16px] w-[140px] h-[40px] text-white font-[600] rounded-[8px]">
+                            <a  th:href="@{/ung-tuyen/{jobId}(jobId=${job.id})}"  class="bg-[green] mr-[16px] w-[140px] flex items-center justify-center h-[40px] text-white font-[600] rounded-[8px]">
                                 Ứng tuyển ngay
-                            </button>
+                            </a>
                             <button class="w-[100px] h-[40px] text-[green] font-[600] rounded-[8px] border-solid border-[1px] border-[green]">
                                 Lưu tin
                             </button>

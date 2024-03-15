@@ -1,5 +1,6 @@
 package com.danglich.jobxinseeker.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -70,8 +71,38 @@ public class JobSeekers extends DateAudit {
 	  inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private List<Category> categories;
 	
+	@ManyToMany(cascade = {CascadeType.PERSIST , CascadeType.MERGE , CascadeType.REFRESH , CascadeType.DETACH})
+	@JoinTable(
+	  name = "job_saved", 
+	  joinColumns = @JoinColumn(name = "seeker_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "job_id"))
+	private List<Jobs> savedJobs;
+	
 	@OneToMany(mappedBy = "seeker")
 	private List<Application> applications;
+	
+	
+	public void saveJob(Jobs job) {
+		if(savedJobs == null) {
+			savedJobs = new ArrayList<>();
+		}
+		if(!savedJobs.contains(job)) {
+			savedJobs.add(job);
+			
+		} 
+		
+	}
+	
+	public void unSaveJob(Jobs job) {
+		if(savedJobs == null) {
+			savedJobs = new ArrayList<>();
+		}
+		if(savedJobs.contains(job)) {
+			savedJobs.remove(job);
+			
+		} 
+		
+	}
 	
 	
 
