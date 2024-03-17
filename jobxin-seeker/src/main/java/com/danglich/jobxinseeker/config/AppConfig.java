@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 import com.danglich.jobxinseeker.validation.LoginFormValidator;
 
@@ -26,6 +27,7 @@ public class AppConfig {
 		
 		return new BCryptPasswordEncoder();
 	}
+	
 	
 	@Bean
 	public AuthenticationProvider authenticationProvider(@Lazy UserDetailsService userDetailsService) {

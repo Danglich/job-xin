@@ -1,24 +1,23 @@
 package com.danglich.jobxinseeker.security;
 
+import java.io.IOException;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 
-import com.danglich.jobxinseeker.model.CustomUserDetail;
-import com.danglich.jobxinseeker.service.impl.CustomUserService;
-
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -28,6 +27,7 @@ public class SecurityConfiguration {
 	
 	
 	private final AuthenticationProvider authenticationProvider;
+	
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,13 +37,14 @@ public class SecurityConfiguration {
 						.requestMatchers("/").permitAll()
 						.requestMatchers("/auth/**").permitAll()
 						.requestMatchers("/static/**").permitAll()
+						.requestMatchers("/style/**").permitAll()
 						.requestMatchers("/viec-lam/**").permitAll()
 						.anyRequest().authenticated()
 			
 				)
 			.formLogin(form -> form.loginPage("/auth/login")
-									.loginProcessingUrl("/login-process")
-									.defaultSuccessUrl("/", true)
+									//.loginProcessingUrl("/login-process")
+									//.defaultSuccessUrl("/", true)
 									.usernameParameter("email")
 									.permitAll()
 					)
@@ -59,6 +60,25 @@ public class SecurityConfiguration {
 	}
 	
 	
+	@Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
+
+    public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+
+        @Override
+        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                AuthenticationException exception) throws IOException, ServletException {
+            if (exception instanceof DisabledException) {
+                
+                response.sendRedirect("/disabled-account");
+            } else {
+                
+                response.sendRedirect("/login-error");
+            }
+        }
+    }
 	
 	
 	
