@@ -18,6 +18,12 @@ public interface JobSeekerRepository extends JpaRepository<JobSeekers, Integer>{
             "WHERE s.id = ?1")
     void enable(int seekerId );
 	
+	@Modifying
+	@Query("UPDATE JobSeekers s " +
+            "SET s.password = ?2 " +
+            "WHERE s.id = ?1")
+    void resetPassword(int seekerId , String newPassword );
+	
 	Optional<JobSeekers> findByEmail(String email);
 
 }

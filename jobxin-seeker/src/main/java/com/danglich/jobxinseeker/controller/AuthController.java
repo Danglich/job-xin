@@ -13,7 +13,9 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.context.IExpressionContext;
 import org.thymeleaf.spring6.expression.Fields;
@@ -35,6 +38,8 @@ import com.danglich.jobxinseeker.service.JobSeekerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,7 +49,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuthController {
 	
-	private final AuthenticationManager authenticationManager;
 	private final AuthService authService;
 	
 	@GetMapping("/login")
@@ -122,8 +126,14 @@ public class AuthController {
 			RedirectAttributes redirectAttributes
 			) {
 		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			
+		    return "redirect:/";
+		}
 		
 		if(theBindingResult.hasErrors()) {
+			
 			return "auth/register-form";
 		}
 		
@@ -155,9 +165,25 @@ public class AuthController {
 	
 	// Forget password
 	@PostMapping("/forget-password")
-	public void handleForgetPassword(@ModelAttribute("email") String email) {
+	public String handleForgetPassword( @ModelAttribute("email") String email ,  RedirectAttributes redirectAttributes) {
+		boolean isValidEmail = StringUtils.hasText(email) && email.matches("^[\\w.-]+@[a-zA-Z]+\\.[a-zA-Z]{2,}$");
 		
-		System.out.println(email);
+		if(!isValidEmail) {
+			redirectAttributes.addFlashAttribute("errorMessage", "Thông tin email không hợp lệ");
+			
+			return "redirect:forget-password";
+		}
+		
+		try {
+			authService.resetPassword(email);
+		} catch (ResourceAccessException e) {
+			redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+			
+			return "redirect:forget-password";
+			
+		}
+		
+		return "auth/forget-password-success";
 			
 	}
 

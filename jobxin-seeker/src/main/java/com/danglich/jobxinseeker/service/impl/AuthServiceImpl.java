@@ -2,6 +2,7 @@ package com.danglich.jobxinseeker.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -75,7 +76,7 @@ public class AuthServiceImpl implements AuthService{
 		
 		
 		String link = "http://localhost:8080/auth/confirm?token=" + token;
-		String email = this.buildEmail("", link);
+		String email = this.buildEmailConfirm("", link);
 		mailService.send(registerDTO.getEmail(), "Xác thực tài khoản", email);
 		
 		
@@ -88,12 +89,12 @@ public class AuthServiceImpl implements AuthService{
 		
 		String token = confirmationTokenService.save(seeker);
 		String link = "http://localhost:8080/auth/confirm?token=" + token;
-		String emailHtml = this.buildEmail("", link);
+		String emailHtml = this.buildEmailConfirm("", link);
 		mailService.send(email, "Xác thực tài khoản", emailHtml);
 		
 	}
 	
-	private String buildEmail(String name, String link) {
+	private String buildEmailConfirm(String name, String link) {
 		// Nội dung email dưới dạng HTML với CSS
         String htmlContent = "<html><head><style>"
                 + "body { font-family: Arial, sans-serif; background-color: #f4f4f4; }"
@@ -165,8 +166,27 @@ public class AuthServiceImpl implements AuthService{
 	}
 
 	@Override
+	@Transactional
 	public void resetPassword(String email) {
+		JobSeekers seeker =  seekerRepository.findByEmail(email)
+							.orElseThrow(() -> new ResourceAccessException("Tài khoản email của bạn chưa đăng ký"));
+		String randomPassword = UUID.randomUUID().toString().substring(0, 8);
+		String passwordEncode = passwordEncoder.encode(randomPassword);
 		
+		seekerRepository.resetPassword(seeker.getId(), passwordEncode);
+		
+		String htmlContent = "<html><head><style>"
+                + "body { font-family: Arial, sans-serif; background-color: #f4f4f4; }"
+                + "h1 { color: #333333; }"
+                + "p { color: #666666; }"
+                + "a { color: #007bff; text-decoration: none; }"
+                + "</style></head><body>"
+                + "<h1>Xin chào, </h1>" 
+                + "<p>Mật khẩu mới của bạn là : " + randomPassword + "</p>"
+                + "<p>Vui lòng tuyệt đối không cho ai biết thông tin mật khẩu này!</p>"
+                + "</body></html>";
+		
+		mailService.send(seeker.getEmail(), "Gửi lại mật khẩu", htmlContent);
 		
 	}
 
