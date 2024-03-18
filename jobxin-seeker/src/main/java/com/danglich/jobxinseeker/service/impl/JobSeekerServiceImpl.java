@@ -4,10 +4,14 @@ package com.danglich.jobxinseeker.service.impl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.ResourceAccessException;
 
+import com.danglich.jobxinseeker.dto.ChangePasswordDTO;
 import com.danglich.jobxinseeker.dto.SeekerInfoDTO;
+import com.danglich.jobxinseeker.exception.IncorrectPasswordException;
 import com.danglich.jobxinseeker.model.JobSeekers;
 import com.danglich.jobxinseeker.model.Jobs;
 import com.danglich.jobxinseeker.repository.JobSeekerRepository;
@@ -22,7 +26,7 @@ public class JobSeekerServiceImpl implements JobSeekerService{
 	
 	private final JobSeekerRepository repository;
 	private final JobService jobService;
-
+	private final PasswordEncoder passwordEncoder;
 	
 
 	@Override
@@ -72,6 +76,20 @@ public class JobSeekerServiceImpl implements JobSeekerService{
 		seeker.unSaveJob(job);
 		
 		repository.save(seeker);
+		
+	}
+
+	@Override
+	@Transactional
+	public void changePassword(ChangePasswordDTO request) {
+		JobSeekers seeker = repository.findByEmail(request.getEmail())
+						.orElseThrow(() -> new ResourceAccessException("Not found seeker with this email"));
+		
+		if (!passwordEncoder.matches(request.getOldPassword(), seeker.getPassword()) ) {
+			throw new IncorrectPasswordException("Mật khẩu không đúng");
+		}
+		String newPassword = passwordEncoder.encode(request.getNewPassword());
+		repository.resetPassword(seeker.getId(), newPassword);
 		
 	}
 	

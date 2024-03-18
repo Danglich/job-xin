@@ -6,15 +6,20 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.danglich.jobxinseeker.dto.ChangePasswordDTO;
 import com.danglich.jobxinseeker.dto.SeekerInfoDTO;
+import com.danglich.jobxinseeker.exception.IncorrectPasswordException;
 import com.danglich.jobxinseeker.model.JobSeekers;
 import com.danglich.jobxinseeker.service.JobSeekerService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -36,10 +41,28 @@ public class SeekerController {
 	public String showChangePWPage(Principal principal , Model theModel) {
 		
 		ChangePasswordDTO passwordDTO = new ChangePasswordDTO(principal.getName(), null, null, null);
-		
 		theModel.addAttribute("passwordDTO", passwordDTO);
-		
 		return "profile/change_password";
+	}
+	
+	@PostMapping("/change-password")
+	public String changePassword(@Valid @ModelAttribute(name = "passwordDTO") ChangePasswordDTO passwordDTO, 
+			BindingResult bindingResult, 
+			RedirectAttributes redirectAttributes,
+			Model theModel) {
+		if(bindingResult.hasErrors()) {
+			return "profile/change_password";
+		}
+		
+		try {
+			seekerService.changePassword(passwordDTO);
+		} catch (IncorrectPasswordException e) {
+			// Incorrect password
+			theModel.addAttribute("errorMessage", e.getMessage());
+			return "profile/change_password";
+		}
+		redirectAttributes.addAttribute("success", true);
+		return "redirect:/doi-mat-khau";
 	}
 	
 	@PostMapping("/save-job")
