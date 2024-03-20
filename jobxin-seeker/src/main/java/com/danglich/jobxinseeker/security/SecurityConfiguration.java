@@ -5,15 +5,21 @@ import java.io.IOException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import com.danglich.jobxinseeker.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.danglich.jobxinseeker.service.JobSeekerService;
+
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +33,8 @@ public class SecurityConfiguration {
 	
 	
 	private final AuthenticationProvider authenticationProvider;
+	private final JobSeekerService seekerService;
+	private final OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService;
 	
 
 	@Bean
@@ -36,6 +44,7 @@ public class SecurityConfiguration {
 					configurer
 						.requestMatchers("/").permitAll()
 						.requestMatchers("/auth/**").permitAll()
+						.requestMatchers("/oauth/**").permitAll()
 						.requestMatchers("/static/**").permitAll()
 						.requestMatchers("/style/**").permitAll()
 						.requestMatchers("/viec-lam/**").permitAll()
@@ -52,6 +61,10 @@ public class SecurityConfiguration {
 				logout.logoutUrl("/logout")
 					.logoutSuccessUrl("/auth/login?logout=true")
 					  .permitAll())
+			.oauth2Login(o -> 
+							o.loginPage("/auth/login")
+								.successHandler(oAuthenticationSuccessHandler())
+								.userInfoEndpoint(u -> u.userService(oAuth2UserService)))
 			.authenticationProvider(authenticationProvider)
 			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
 		;
@@ -60,6 +73,12 @@ public class SecurityConfiguration {
 	}
 	
 	
+	@Bean 
+	public AuthenticationSuccessHandler oAuthenticationSuccessHandler() {
+		
+		return new OAuth2AuthenticationSuccessHandler(seekerService);
+	}
+
 	@Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return new CustomAuthenticationFailureHandler();

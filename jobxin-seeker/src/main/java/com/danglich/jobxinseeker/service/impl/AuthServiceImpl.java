@@ -30,6 +30,7 @@ import com.danglich.jobxinseeker.exception.ExitedRegistationException;
 import com.danglich.jobxinseeker.model.ConfirmationToken;
 import com.danglich.jobxinseeker.model.CustomUserDetail;
 import com.danglich.jobxinseeker.model.JobSeekers;
+import com.danglich.jobxinseeker.model.Provider;
 import com.danglich.jobxinseeker.repository.ConfirmationTokenRepository;
 import com.danglich.jobxinseeker.repository.JobSeekerRepository;
 import com.danglich.jobxinseeker.service.AuthService;
@@ -72,6 +73,7 @@ public class AuthServiceImpl implements AuthService{
 							.email(registerDTO.getEmail())
 							.password(passwordEncoder.encode(registerDTO.getPassword()))
 							.enabled(false)
+							.provider(Provider.DATABASE)
 							.build()));
 		
 		

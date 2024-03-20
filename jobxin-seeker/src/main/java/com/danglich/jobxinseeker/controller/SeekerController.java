@@ -37,6 +37,20 @@ public class SeekerController {
 		return "profile/information";
 	}
 	
+	@PostMapping("/change-info")
+	public String changeInfo(@Valid @ModelAttribute(name = "information") SeekerInfoDTO request ,
+			BindingResult bindingResult ,
+			RedirectAttributes redirectAttributes
+			) {
+		
+		if(bindingResult.hasErrors() || (request.getFullName()==null && request.getPhoneNumber()==null)) {
+			return "profile/information";
+		}
+		seekerService.updateInfo(request);
+		redirectAttributes.addAttribute("success", true);
+		return "redirect:/thong-tin-ca-nhan";
+		
+	}
 	@GetMapping("/doi-mat-khau")
 	public String showChangePWPage(Principal principal , Model theModel) {
 		

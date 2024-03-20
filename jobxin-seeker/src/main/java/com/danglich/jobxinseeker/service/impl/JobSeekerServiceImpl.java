@@ -1,5 +1,6 @@
 package com.danglich.jobxinseeker.service.impl;
 
+import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +15,9 @@ import com.danglich.jobxinseeker.dto.SeekerInfoDTO;
 import com.danglich.jobxinseeker.exception.IncorrectPasswordException;
 import com.danglich.jobxinseeker.model.JobSeekers;
 import com.danglich.jobxinseeker.model.Jobs;
+import com.danglich.jobxinseeker.model.Provider;
 import com.danglich.jobxinseeker.repository.JobSeekerRepository;
+import com.danglich.jobxinseeker.security.oauth2.CustomOAuth2User;
 import com.danglich.jobxinseeker.service.JobSeekerService;
 import com.danglich.jobxinseeker.service.JobService;
 
@@ -92,7 +95,36 @@ public class JobSeekerServiceImpl implements JobSeekerService{
 		repository.resetPassword(seeker.getId(), newPassword);
 		
 	}
-	
-	
+
+	@Override
+	public SeekerInfoDTO updateInfo(SeekerInfoDTO request) {
+		JobSeekers seeker = repository.findByEmail(request.getEmail())
+				.orElseThrow(() -> new ResourceAccessException("Not found seeker with this email"));
+		
+		seeker.setFullName(request.getFullName());
+		seeker.setPhoneNumber(request.getPhoneNumber());
+		repository.save(seeker);
+		
+		return request;
+		
+	}
+
+	@Override
+	public void processLoginWithOAuth(CustomOAuth2User oAuth2User) {
+		String email = oAuth2User.getEmail();
+		Optional<JobSeekers> seekerOptional = repository.findByEmail(email);
+		if(seekerOptional.isEmpty()) {
+			JobSeekers seeker = JobSeekers.builder()
+									.avatar(oAuth2User.getAvatar())
+									.fullName(oAuth2User.getName())
+									.enabled(true)
+									.provider(Provider.GOOGLE)
+									.email(email)
+									.build();
+			repository.save(seeker);
+		}
+		
+		
+	}
 
 }

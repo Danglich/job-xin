@@ -18,7 +18,14 @@
                 <div class="col-8">
                     <div class="bg-white rounded-[8px] px-[24px] py-[28px]">
                         <h4 class="text-[18px]">Cài đặt thông tin cá nhân</h4>
+<<<<<<< HEAD
+                        <div th:if="${param.success}" class=" flex px-[12px] my-[8px] items-center h-[40px] rounded-[6px] bg-green-500">
+                            <p class="text-white">Cập nhật thành công !</p>
+                        </div>
+                        <form th:action="@{/change-info}" method="post" th:object="${information}">
+=======
                         <form th:action="@{/}" th:object="${information}">
+>>>>>>> 8fdf327684984ea7a749dd4d129dc040a7ebdd2b
                             <div class="mb-[12px]">
                                 <p class="font-[500]">
                                     Họ và tên 
@@ -30,12 +37,21 @@
                                     Số điện thoại
                                 </p>
                                 <input class="w-full mt-[10px] h-[40px] px-[12px] hover:border-[green!important] rounded-[6px]  outline-none border" th:field="*{phoneNumber}" placeholder="Nhập số điện thoại" />
+<<<<<<< HEAD
+                                <span th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger mt-[4px] block"></span>
+=======
+>>>>>>> 8fdf327684984ea7a749dd4d129dc040a7ebdd2b
                             </div>
                             <div class="mb-[12px]">
                                 <p class="font-[500]">
                                     Email
                                 </p>
+<<<<<<< HEAD
+                                <input class="w-full mt-[10px] h-[40px] px-[12px] cursor-[not-allowed] rounded-[6px]  outline-none border" th:field="*{email}" readonly="readonly"  />
+                                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger mt-[4px] block"></span>
+=======
                                 <input class="w-full mt-[10px] h-[40px] px-[12px] cursor-[not-allowed] rounded-[6px]  outline-none border" th:field="*{email}" disabled  />
+>>>>>>> 8fdf327684984ea7a749dd4d129dc040a7ebdd2b
                             </div>
 
                             <button class="text-white font-bold h-[42px] mt-[16px] rounded-[8px] bg-green-600 w-[108px]">Lưu</button>
