@@ -9,13 +9,17 @@ import com.danglich.jobxinseeker.model.Jobs;
 
 public interface JobService {
 	
-	Page<Jobs> getNewestJob(int page);
+	Page<Jobs> getNewestJobs(int page);
+	
+	Page<Jobs> getTopJobs(int page);
+	
+	Page<Jobs> getSuggestJobsForUser(int page);
 	
 	Jobs getById(int id);
 	
 	List<Jobs> getSuggestJobsByCategory(int categoryId);
 	
-	List<Jobs> getTop5SuggestJobs();
+	List<Jobs> getTop4SuggestJobs();
 	
 	
 	List<Jobs> getJobsSaved();

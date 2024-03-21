@@ -1,6 +1,5 @@
 package com.danglich.jobxinseeker.model;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;

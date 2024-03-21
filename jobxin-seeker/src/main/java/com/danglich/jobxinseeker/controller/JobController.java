@@ -39,7 +39,7 @@ public class JobController {
 			@RequestParam(value = "page", defaultValue = "0") int page,
             Model model) {
 		
-		Page<Jobs> jobPage = service.getNewestJob(page);
+		Page<Jobs> jobPage = service.getNewestJobs(page);
 		model.addAttribute("jobs", jobPage.getContent());
         model.addAttribute("currentPage", jobPage.getNumber());
         model.addAttribute("totalPages", jobPage.getTotalPages());
@@ -67,12 +67,12 @@ public class JobController {
 		List<Jobs> suggestJobs = service.getSuggestJobsByCategory(job.getCompany().getId());
 		theModel.addAttribute("suggestJobs", suggestJobs);
 		
-		List<Jobs> suggestJobsByUser = service.getTop5SuggestJobs();
+		List<Jobs> suggestJobsByUser = service.getTop4SuggestJobs();
 		theModel.addAttribute("suggestJobsByUser", suggestJobsByUser);
 		
 		return "job/job-detail";
 	}
-	
+
 	
 	@GetMapping("/ung-tuyen/{jobId}")
 	public String showApplicationForm(@PathVariable(name = "jobId") int jobId , Model theModel) {
@@ -80,7 +80,7 @@ public class JobController {
 		Jobs job = service.getById(jobId);
 		theModel.addAttribute("job", job);
 		
-		List<Jobs> suggestJobsByUser = service.getTop5SuggestJobs();
+		List<Jobs> suggestJobsByUser = service.getTop4SuggestJobs();
 		theModel.addAttribute("suggestJobsByUser", suggestJobsByUser);
 		
 		ApplicationDTO application = new ApplicationDTO();

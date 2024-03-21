@@ -1,14 +1,19 @@
 package com.danglich.jobxinseeker.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -30,6 +35,8 @@ public class JobServiceImpl implements JobService{
 	
 	private JobSeekerService seekerService;
 	
+	private static final int NUMBER_PER_PAGE = 6;
+	
 	@Autowired
     public JobServiceImpl(@Lazy JobSeekerService seekerService, JobRepository repository) {
         this.repository = repository;
@@ -37,10 +44,10 @@ public class JobServiceImpl implements JobService{
     }
 
 	@Override
-	public Page<Jobs> getNewestJob(int page) {
+	public Page<Jobs> getNewestJobs(int page) {
 		
 		Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
-		Pageable pageable = PageRequest.of(page, 8, sort); 
+		Pageable pageable = PageRequest.of(page, NUMBER_PER_PAGE, sort); 
 		
 		Page<Jobs> jobPage = repository.findByExpiredAtAfter(LocalDateTime.now(), pageable);
 		
@@ -60,16 +67,16 @@ public class JobServiceImpl implements JobService{
 	}
 
 	@Override
-	public List<Jobs> getTop5SuggestJobs() {
+	public List<Jobs> getTop4SuggestJobs() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		
-		if(authentication.isAuthenticated()) {
+		if(!(authentication instanceof AnonymousAuthenticationToken)) {
 			JobSeekers jobSeeker = seekerService.getByUsername(authentication.getName());
 			
-			return repository.findTop5ByCategoryInOrderByCreatedAtDesc(jobSeeker.getCategories());
+			return repository.findTop4ByCategoryInOrderByCreatedAtDesc(jobSeeker.getCategories());
 		}
 		
-		return repository.findTop5ByOrderByCreatedAtDesc();
+		return repository.findTop4ByOrderByCreatedAtDesc();
 	}
 
 
@@ -79,6 +86,27 @@ public class JobServiceImpl implements JobService{
 		JobSeekers seeker = seekerService.getCurrentUser();
 		
 		return seeker.getSavedJobs();
+	}
+
+	@Override
+	public Page<Jobs> getTopJobs(int page) {
+		Pageable pageable = PageRequest.of(page, NUMBER_PER_PAGE); 
+		Page<Jobs> jobPage = repository.findTopJobsByApplicationCount(LocalDateTime.now() ,pageable);
+		
+		return jobPage;
+	}
+
+	@Override
+	public Page<Jobs> getSuggestJobsForUser(int page) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Pageable pageable = PageRequest.of(page, NUMBER_PER_PAGE);
+		if(!(authentication instanceof AnonymousAuthenticationToken)) {
+			JobSeekers jobSeeker = seekerService.getByUsername(authentication.getName());
+			
+			return repository.findByCategoryInAndExpiredAtAfter(jobSeeker.getCategories(), LocalDateTime.now() , pageable);
+		}
+		
+		return this.getNewestJobs(page);
 	}
 
 }
