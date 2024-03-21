@@ -1018,6 +1018,10 @@ video {
   min-height: 100vh;
 }
 
+.min-h-\[500px\] {
+  min-height: 500px;
+}
+
 .w-16 {
   width: 4rem;
 }

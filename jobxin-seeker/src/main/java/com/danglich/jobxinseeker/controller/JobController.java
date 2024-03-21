@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.danglich.jobxinseeker.dto.ApplicationDTO;
 import com.danglich.jobxinseeker.model.Jobs;
+import com.danglich.jobxinseeker.service.CompanyService;
 import com.danglich.jobxinseeker.service.JobService;
 
 import lombok.RequiredArgsConstructor;

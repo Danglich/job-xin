@@ -46,6 +46,9 @@ public class Company extends DateAudit {
 	@Column(name = "avatar")
 	private String avatar;
 	
+	@Column(name = "banner")
+	private String banner;
+	
 	@Column(name = "description")
 	private String description;
 	
