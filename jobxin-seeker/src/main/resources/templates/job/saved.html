@@ -31,8 +31,9 @@
                 <div class="row">
                     <div class="col-sm-9 ">
     
+                        <!-- Nếu không có -->
                         <div class="flex flex-col items-center gap-[14px]" th:if="${#lists.size(savedJobs)} == 0">
-                            <img class="w-[30%]" src="https://static.topcv.vn/v4/image/empty.png" />
+                            <img class="w-[30%]" th:src="@{/static/images/empty.webp}"/>
                             <p>Bạn chưa lưu công việc nào !</p>
                             <a th:href="@{/viec-lam}" class="bg-green-700 cursor-pointer text-white rounded-[8px] flex items-center justify-center h-[40px] w-[140px]">Tìm việc ngay</a>
                         </div>

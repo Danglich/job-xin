@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -48,6 +49,7 @@ public class SecurityConfiguration {
 						.requestMatchers("/static/**").permitAll()
 						.requestMatchers("/style/**").permitAll()
 						.requestMatchers("/viec-lam/**").permitAll()
+						.requestMatchers(HttpMethod.GET , "/cong-ty/**").permitAll()
 						.anyRequest().authenticated()
 			
 				)

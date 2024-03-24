@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.danglich.jobxinseeker.model.Category;
+import com.danglich.jobxinseeker.model.Company;
 import com.danglich.jobxinseeker.model.Jobs;
 
 public interface JobService {
@@ -21,7 +22,8 @@ public interface JobService {
 	
 	List<Jobs> getTop4SuggestJobs();
 	
-	
 	List<Jobs> getJobsSaved();
+	
+	Page<Jobs> getJobsOfCompany(String keyword , Company company, int pageNumber);
 
 }

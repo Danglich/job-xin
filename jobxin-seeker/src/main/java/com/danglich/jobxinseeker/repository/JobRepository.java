@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.danglich.jobxinseeker.model.Category;
+import com.danglich.jobxinseeker.model.Company;
 import com.danglich.jobxinseeker.model.Jobs;
 
 public interface JobRepository extends JpaRepository<Jobs, Integer>{
@@ -26,6 +27,8 @@ public interface JobRepository extends JpaRepository<Jobs, Integer>{
 	Page<Jobs> findTopJobsByApplicationCount(@Param("currentDate") LocalDateTime currentDate, Pageable pageable);
 	
 	Page<Jobs> findByCategoryInAndExpiredAtAfter(List<Category> categories ,LocalDateTime currentDate, Pageable pageable);
+	
+	Page<Jobs> findByTitleContainingAndCompany(String keyword , Company company , Pageable pageable);
 	
 //	@Query("SELECT j, COALESCE(COUNT(a), 0) AS applicationCount FROM Jobs j LEFT JOIN j.applications a GROUP BY j ORDER BY applicationCount DESC")
 //	Page<Object[]> findTopJobsByApplicationCount(Pageable pageable);

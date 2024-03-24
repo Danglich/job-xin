@@ -1,29 +1,41 @@
 package com.danglich.jobxinseeker.model;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Builder
-@EqualsAndHashCode(callSuper=false)
 @Table(name = "company")
 public class Company extends DateAudit {
-	
+
 	/**
 	 * 
 	 */
@@ -33,33 +45,84 @@ public class Company extends DateAudit {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "email")
 	private String email;
-	
+
 	@Column(name = "password")
 	private String password;
-	
+
 	@Column(name = "avatar")
 	private String avatar;
-	
+
 	@Column(name = "banner")
 	private String banner;
-	
+
 	@Column(name = "description")
 	private String description;
-	
+
 	@Column(name = "address")
 	private String address;
-	
+
 	@Column(name = "scale")
 	private String scale;
-	
-	@OneToMany(mappedBy = "company")
+
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private Category category;
+
+	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
 	private List<Jobs> jobs;
+
+	@ManyToMany(mappedBy = "followedCompanies")
+	private Set<JobSeekers> followers = new HashSet<>();
+
+	@Override
+	public String toString() {
+		return "Company [id=" + id + ", name=" + name + ", email=" + email
+				+ ", password=" + password + ", avatar=" + avatar + ", banner="
+				+ banner + ", description=" + description + ", address="
+				+ address + ", scale=" + scale;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ Objects.hash(address, avatar, banner, category, description,
+						email, followers, id, jobs, name, password, scale);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Company other = (Company) obj;
+		return Objects.equals(address, other.address)
+				&& Objects.equals(avatar, other.avatar)
+				&& Objects.equals(id, other.id)
+				&& Objects.equals(banner, other.banner)
+				&& Objects.equals(category, other.category)
+				&& Objects.equals(description, other.description)
+				&& Objects.equals(email, other.email)
+				&& Objects.equals(followers, other.followers) && id == other.id
+				&& Objects.equals(jobs, other.jobs)
+				&& Objects.equals(name, other.name)
+				&& Objects.equals(password, other.password)
+				&& Objects.equals(scale, other.scale);
+	}
+	
+	
+	
 	
 
 }

@@ -24,5 +24,9 @@ public interface JobSeekerService {
 	
 	void processLoginWithOAuth(CustomOAuth2User oAuth2User) ;
 
+	void followCompany(int companyId);
+
+	void unfollowCompany(int companyId);
+
 
 }

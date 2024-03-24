@@ -103,7 +103,7 @@
 
                             <!-- Nếu không cos công ty -->
                             <div class="flex gap-[16px] flex-col items-center justify-center min-h-[500px]" th:if="${totalElements == 0}">
-                                <img src="https://static.topcv.vn/v4/image/empty.png" />
+                                <img th:src="@{/static/images/empty.webp}" />
                                 <p>Không tìm thấy công ty nào phù hợp</p>
                             </div>
                         </div>

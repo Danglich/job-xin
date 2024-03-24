@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import com.danglich.jobxinseeker.model.Company;
 import com.danglich.jobxinseeker.model.JobSeekers;
 import com.danglich.jobxinseeker.model.Jobs;
 import com.danglich.jobxinseeker.repository.JobRepository;
@@ -29,84 +30,106 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class JobServiceImpl implements JobService{
-	
+public class JobServiceImpl implements JobService {
+
 	private JobRepository repository;
-	
+
 	private JobSeekerService seekerService;
-	
+
 	private static final int NUMBER_PER_PAGE = 6;
-	
+
 	@Autowired
-    public JobServiceImpl(@Lazy JobSeekerService seekerService, JobRepository repository) {
-        this.repository = repository;
-        this.seekerService = seekerService;
-    }
+	public JobServiceImpl(@Lazy JobSeekerService seekerService,
+			JobRepository repository) {
+		this.repository = repository;
+		this.seekerService = seekerService;
+	}
 
 	@Override
 	public Page<Jobs> getNewestJobs(int page) {
-		
+
 		Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
-		Pageable pageable = PageRequest.of(page, NUMBER_PER_PAGE, sort); 
-		
-		Page<Jobs> jobPage = repository.findByExpiredAtAfter(LocalDateTime.now(), pageable);
-		
+		Pageable pageable = PageRequest.of(page, NUMBER_PER_PAGE, sort);
+
+		Page<Jobs> jobPage = repository
+				.findByExpiredAtAfter(LocalDateTime.now(), pageable);
+
 		return jobPage;
 	}
 
 	@Override
 	public Jobs getById(int id) {
-		
-		return repository.findById(id).orElseThrow(() -> new ResourceAccessException("Not found job"));
+
+		return repository.findById(id).orElseThrow(
+				() -> new ResourceAccessException("Not found job"));
 	}
 
 	@Override
 	public List<Jobs> getSuggestJobsByCategory(int categoryId) {
-		
+
 		return repository.findTop5ByCategoryId(categoryId);
 	}
 
 	@Override
 	public List<Jobs> getTop4SuggestJobs() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		
-		if(!(authentication instanceof AnonymousAuthenticationToken)) {
-			JobSeekers jobSeeker = seekerService.getByUsername(authentication.getName());
-			
-			return repository.findTop4ByCategoryInOrderByCreatedAtDesc(jobSeeker.getCategories());
+		Authentication authentication = SecurityContextHolder.getContext()
+				.getAuthentication();
+
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			JobSeekers jobSeeker = seekerService
+					.getByUsername(authentication.getName());
+
+			List<Jobs> jobs = repository
+					.findTop4ByCategoryInOrderByCreatedAtDesc(
+							jobSeeker.getCategories());
+			if (jobs.size() > 0)
+				return jobs;
 		}
-		
+
 		return repository.findTop4ByOrderByCreatedAtDesc();
 	}
 
-
 	@Override
 	public List<Jobs> getJobsSaved() {
-		
+
 		JobSeekers seeker = seekerService.getCurrentUser();
-		
+
 		return seeker.getSavedJobs();
 	}
 
 	@Override
 	public Page<Jobs> getTopJobs(int page) {
-		Pageable pageable = PageRequest.of(page, NUMBER_PER_PAGE); 
-		Page<Jobs> jobPage = repository.findTopJobsByApplicationCount(LocalDateTime.now() ,pageable);
-		
+		Pageable pageable = PageRequest.of(page, NUMBER_PER_PAGE);
+		Page<Jobs> jobPage = repository
+				.findTopJobsByApplicationCount(LocalDateTime.now(), pageable);
+
 		return jobPage;
 	}
 
 	@Override
 	public Page<Jobs> getSuggestJobsForUser(int page) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Authentication authentication = SecurityContextHolder.getContext()
+				.getAuthentication();
 		Pageable pageable = PageRequest.of(page, NUMBER_PER_PAGE);
-		if(!(authentication instanceof AnonymousAuthenticationToken)) {
-			JobSeekers jobSeeker = seekerService.getByUsername(authentication.getName());
-			
-			return repository.findByCategoryInAndExpiredAtAfter(jobSeeker.getCategories(), LocalDateTime.now() , pageable);
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			JobSeekers jobSeeker = seekerService
+					.getByUsername(authentication.getName());
+
+			return repository.findByCategoryInAndExpiredAtAfter(
+					jobSeeker.getCategories(), LocalDateTime.now(), pageable);
 		}
-		
+
 		return this.getNewestJobs(page);
+	}
+
+	@Override
+	public Page<Jobs> getJobsOfCompany(String keyword, Company company,
+			int pageNumber) {
+		Pageable pageable = PageRequest.of(pageNumber, NUMBER_PER_PAGE);
+		Page<Jobs> pageJobs = repository
+				.findByTitleContainingAndCompany(keyword, company, pageable);
+
+		return pageJobs;
 	}
 
 }

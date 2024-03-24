@@ -1,6 +1,7 @@
 package com.danglich.jobxinseeker.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,17 +25,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
-@EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "seeker")
 public class JobSeekers extends DateAudit {
-	
+
 	/**
 	 * 
 	 */
@@ -44,72 +47,85 @@ public class JobSeekers extends DateAudit {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	
+
 	@Column(name = "email")
 	private String email;
-	
+
 	@Column(name = "password")
 	private String password;
-	
+
 	@Column(name = "full_name")
 	private String fullName;
-	
+
 	@Column(name = "phone_number")
 	private String phoneNumber;
-	
+
 	@Column(name = "code")
 	private String code;
-	
+
 	@Column(name = "avatar")
-	private String avatar; 
-	
+	private String avatar;
+
 	@Column(name = "enabled")
 	private boolean enabled;
-	
+
 	@Column(name = "provider")
 	@Enumerated(EnumType.STRING)
 	private Provider provider;
-	
-	@ManyToMany(fetch = FetchType.EAGER ,cascade = {CascadeType.PERSIST , CascadeType.MERGE , CascadeType.REFRESH , CascadeType.DETACH})
-	@JoinTable(
-	  name = "seeker_category", 
-	  joinColumns = @JoinColumn(name = "seeker_id"), 
-	  inverseJoinColumns = @JoinColumn(name = "category_id"))
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,
+			CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+	@JoinTable(name = "seeker_category", joinColumns = @JoinColumn(name = "seeker_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private List<Category> categories;
-	
-	@ManyToMany(cascade = {CascadeType.PERSIST , CascadeType.MERGE , CascadeType.REFRESH , CascadeType.DETACH})
-	@JoinTable(
-	  name = "job_saved", 
-	  joinColumns = @JoinColumn(name = "seeker_id"), 
-	  inverseJoinColumns = @JoinColumn(name = "job_id"))
+
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REFRESH, CascadeType.DETACH})
+	@JoinTable(name = "job_saved", joinColumns = @JoinColumn(name = "seeker_id"), inverseJoinColumns = @JoinColumn(name = "job_id"))
 	private List<Jobs> savedJobs;
-	
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,
+			CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+	@JoinTable(name = "seeker_company_follow", joinColumns = @JoinColumn(name = "seeker_id"), inverseJoinColumns = @JoinColumn(name = "company_id"))
+	private Set<Company> followedCompanies = new HashSet<>();;
+
 	@OneToMany(mappedBy = "seeker")
 	private List<Application> applications;
-	
-	
+
 	public void saveJob(Jobs job) {
-		if(savedJobs == null) {
+		if (savedJobs == null) {
 			savedJobs = new ArrayList<>();
 		}
-		if(!savedJobs.contains(job)) {
+		if (!savedJobs.contains(job)) {
 			savedJobs.add(job);
-			
-		} 
-		
+
+		}
+
 	}
-	
+
 	public void unSaveJob(Jobs job) {
-		if(savedJobs == null) {
+		if (savedJobs == null) {
 			savedJobs = new ArrayList<>();
 		}
-		if(savedJobs.contains(job)) {
+		if (savedJobs.contains(job)) {
 			savedJobs.remove(job);
-			
-		} 
-		
+
+		}
+
+	}
+
+	public void followCompany(Company company) {
+		this.followedCompanies.add(company);
+
 	}
 	
 	
+
+	@Override
+	public String toString() {
+		return "JobSeekers [id=" + id + ", email=" + email + ", password="
+				+ password + ", fullName=" + fullName + ", phoneNumber="
+				+ phoneNumber + ", code=" + code + ", avatar=" + avatar
+				+ ", enabled=" + enabled + ", provider=" + provider + "]";
+	}
 
 }

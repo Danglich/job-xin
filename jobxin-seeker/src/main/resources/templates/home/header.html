@@ -100,7 +100,7 @@
                                 </a>
                             </li>
                             <li >
-                                <form th:action="@{logout}" method="post" >
+                                <form th:action="@{/logout}" method="post" >
                                     <input type="submit" class="btn btn-info" value="Đăng xuất" />
                                 
                                 </form>
@@ -112,7 +112,7 @@
                 
             </div>
             <div sec:authorize="!isAuthenticated()">
-                <a class="btn btn-info" th:href="@{auth/login}" >Đăng nhập</a>
+                <a class="btn btn-info" th:href="@{/auth/login}" >Đăng nhập</a>
             </div>
 
         </div>
