@@ -19,10 +19,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import com.danglich.jobxinseeker.dto.SalaryRange;
+import com.danglich.jobxinseeker.model.Address;
 import com.danglich.jobxinseeker.model.Company;
+import com.danglich.jobxinseeker.model.Experience;
 import com.danglich.jobxinseeker.model.JobSeekers;
 import com.danglich.jobxinseeker.model.Jobs;
 import com.danglich.jobxinseeker.repository.JobRepository;
+import com.danglich.jobxinseeker.service.AddressService;
 import com.danglich.jobxinseeker.service.JobSeekerService;
 import com.danglich.jobxinseeker.service.JobService;
 
@@ -33,16 +37,17 @@ import lombok.RequiredArgsConstructor;
 public class JobServiceImpl implements JobService {
 
 	private JobRepository repository;
-
 	private JobSeekerService seekerService;
+	private AddressService addressService;
 
 	private static final int NUMBER_PER_PAGE = 6;
 
 	@Autowired
 	public JobServiceImpl(@Lazy JobSeekerService seekerService,
-			JobRepository repository) {
+			JobRepository repository, AddressService addressService) {
 		this.repository = repository;
 		this.seekerService = seekerService;
+		this.addressService = addressService;
 	}
 
 	@Override
@@ -130,6 +135,42 @@ public class JobServiceImpl implements JobService {
 				.findByTitleContainingAndCompany(keyword, company, pageable);
 
 		return pageJobs;
+	}
+
+	@Override
+	public Page<Jobs> searchJobsByCriteria(String keyword, Integer addressId,
+			String experienceString, String salaryRange, int pageNumber) {
+		Experience experience;
+		Address address;
+		Integer minSalary = null;
+		Integer maxSalary = null;
+		try {
+			experience = Experience.valueOf(experienceString);
+			
+		} catch (Exception e) {
+			experience = null;
+		}
+
+		try {
+			address = addressService.getById(addressId);
+		} catch (Exception e) {
+			address = null ;
+		}
+		
+		try {
+			SalaryRange range = SalaryRange.valueOf(salaryRange);
+			minSalary = range.getMinSalary();
+			maxSalary = range.getMaxSalary();
+		} catch (Exception e) {
+			minSalary = 0;
+			maxSalary = 1000;
+		}
+		
+		
+
+		Pageable pageable = PageRequest.of(pageNumber, NUMBER_PER_PAGE);
+		return repository.searchJobsByCriteria(keyword, address, experience,
+				minSalary, maxSalary, LocalDateTime.now(), pageable);
 	}
 
 }

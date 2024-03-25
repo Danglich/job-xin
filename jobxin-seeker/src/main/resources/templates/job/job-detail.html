@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Việc làm</title>
+    <title th:text="${job.title}"></title>
      <link th:href="@{/static/style/home.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/static/style/output.css}" rel="stylesheet"  />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -10,13 +10,13 @@
     <div th:replace="home/header.html :: body"></div>
    
     
-    <div th:replace="home/slide-banner.html :: body"></div>
+    <!-- <div th:replace="home/slide-banner.html :: body"></div> -->
 
     <!-- Phần content -->
     <div class="bg-[#f4f5f5]">
         <div class="container ">
             <!-- breadcrumb -->
-            <nav class="pt-[12px]">
+            <nav class="pt-[28px] pb-[16px]">
                 <ul class="flex text-[17px]">
                     <li><a th:href="@{/}" class="text-[green] font-[500] mr-[6px] hover:no-underline hover:text-[green]">Trang chủ</a></li>
                     <span>/</span>
@@ -52,7 +52,7 @@
                                 </div>
                                 <div>
                                     <p>Địa điểm</p>
-                                    <p th:text="${job.address}" class="font-bold">Hà Nội</p>
+                                    <p th:text="${job.address.province}" class="font-bold">Hà Nội</p>
                                 </div>
                             </div>
                             <div class="flex items-center justify-center">
@@ -179,7 +179,7 @@
                                         <a th:text="${job.title}" th:href="@{/viec-lam/{jobId}(jobId=${job.id})}" class="text-[17px] block mb-[10px] font-[500] text-[#344563] hover:text-[green]"></a>
                                         <a th:href="@{/cong-ty/{companyId}(companyId=${job.company.id})}" th:text="${job.company.name}" class="text-[15px] text-[#344563]  font-[400] hover:text-[green]"></a>
                                         <div class="flex gap-[12px] mt-[10px]">
-                                            <p th:text="${job.address}" class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Hà Nội</p>
+                                            <p th:text="${job.address.province}" class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Hà Nội</p>
                                             <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Còn <strong  th:text="${@timeUtil.daysOfExpired(job.expiredAt)}">6</strong> ngày để ứng tuyển</p>
                                         </div>
                                     </div>
@@ -248,7 +248,7 @@
                                 <div class="flex items-center justify-between mt-[18px]">
                                     <div class="flex gap-[10px]">
                                         <p class="text-[13px] px-[8px] rounded-[4px] bg-[#e4e4e4]"><span th:text="${job.salaryStart}"></span> - <span th:text="${job.salaryEnd}"></span> triệu</p>
-                                        <p th:text="${job.address}" class="text-[13px] px-[8px] rounded-[4px] bg-[#e4e4e4]"></p>
+                                        <p th:text="${job.address.province}" class="text-[13px] px-[8px] rounded-[4px] bg-[#e4e4e4]"></p>
 
                                     </div>
                                     <button class="px-[4px]">

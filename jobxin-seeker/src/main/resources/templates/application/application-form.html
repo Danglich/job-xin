@@ -69,7 +69,7 @@
                                   
                             </div>
                             <p class="text-[15px] opacity-[0.8]">Một thư giới thiệu ngắn gọn, chỉn chu sẽ giúp bạn trở nên chuyên nghiệp và gây ấn tượng hơn với nhà tuyển dụng.</p>
-                            <textarea th:field="*{message}" class="border mt-[12px] h-[80px] rounded outline-none w-full"></textarea>
+                            <textarea th:field="*{message}" class="border p-[8px] mt-[12px] h-[80px] rounded outline-none w-full"></textarea>
 
                             <button class="h-[42px] mt-[16px] hover:opacity-[0.8] w-[200px] rounded bg-green-700 text-white ">Nộp hồ sơ ứng tuyển</button>
                         </form>
@@ -124,7 +124,7 @@
                                 <div class="flex items-center justify-between mt-[18px]">
                                     <div class="flex gap-[10px]">
                                         <p class="text-[13px] px-[8px] rounded-[4px] bg-[#e4e4e4]"><span th:text="${job.salaryStart}"></span> - <span th:text="${job.salaryEnd}"></span> triệu</p>
-                                        <p th:text="${job.address}" class="text-[13px] px-[8px] rounded-[4px] bg-[#e4e4e4]"></p>
+                                        <p th:text="${job.address.province}" class="text-[13px] px-[8px] rounded-[4px] bg-[#e4e4e4]"></p>
 
                                     </div>
                                     <button class="px-[4px]">

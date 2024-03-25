@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.danglich.jobxinseeker.dto.ApplicationDTO;
+import com.danglich.jobxinseeker.dto.SalaryRange;
+import com.danglich.jobxinseeker.model.Experience;
 import com.danglich.jobxinseeker.model.Jobs;
+import com.danglich.jobxinseeker.service.AddressService;
 import com.danglich.jobxinseeker.service.CompanyService;
 import com.danglich.jobxinseeker.service.JobService;
 
@@ -22,11 +25,30 @@ import lombok.RequiredArgsConstructor;
 public class JobController {
 	
 	private final JobService service;
+	private final AddressService addressService;
 	
 	@GetMapping("/viec-lam")
-	public String showJobPage() {
+	public String showJobPage(@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "keyword", defaultValue = "") String keyword,
+			@RequestParam(value = "experience", defaultValue = "") String experience,
+			@RequestParam(value = "addressId" , required =  false) Integer addressId,
+			@RequestParam(value = "salaryRange", defaultValue = "") String salaryRange,
+            Model model) {
 		
-		return "job/index";
+		model.addAttribute("experiences", Experience.values());
+		model.addAttribute("addresses", addressService.getAll());
+		model.addAttribute("salaryRanges", SalaryRange.values());
+		
+		Page<Jobs> jobsPage = service.searchJobsByCriteria(keyword, addressId, experience, salaryRange, page);
+		model.addAttribute("jobs", jobsPage.getContent());
+		model.addAttribute("currentPage", jobsPage.getNumber());
+        model.addAttribute("totalPages", jobsPage.getTotalPages());
+        model.addAttribute("totalElements", jobsPage.getTotalElements());
+        
+        List<Jobs> suggestJobsByUser = service.getTop4SuggestJobs();
+		model.addAttribute("suggestJobsByUser", suggestJobsByUser);
+		
+		return "job/list";
 	}
 	
 	@GetMapping("/viec-lam-tot-nhat")

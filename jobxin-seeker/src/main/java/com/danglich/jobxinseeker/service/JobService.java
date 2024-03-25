@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import com.danglich.jobxinseeker.model.Address;
 import com.danglich.jobxinseeker.model.Category;
 import com.danglich.jobxinseeker.model.Company;
+import com.danglich.jobxinseeker.model.Experience;
 import com.danglich.jobxinseeker.model.Jobs;
 
 public interface JobService {
@@ -25,5 +27,7 @@ public interface JobService {
 	List<Jobs> getJobsSaved();
 	
 	Page<Jobs> getJobsOfCompany(String keyword , Company company, int pageNumber);
+	
+	Page<Jobs> searchJobsByCriteria(String keyword, Integer addressId, String experience , String salaryRange, int pageNumber);
 
 }

@@ -64,11 +64,12 @@ public class Company extends DateAudit {
 	@Column(name = "description")
 	private String description;
 
-	@Column(name = "address")
-	private String address;
-
 	@Column(name = "scale")
 	private String scale;
+	
+	@ManyToOne
+	@JoinColumn(name = "address_id")
+	private Address address;
 
 	@ManyToOne
 	@JoinColumn(name = "category_id")
@@ -84,17 +85,15 @@ public class Company extends DateAudit {
 	public String toString() {
 		return "Company [id=" + id + ", name=" + name + ", email=" + email
 				+ ", password=" + password + ", avatar=" + avatar + ", banner="
-				+ banner + ", description=" + description + ", address="
-				+ address + ", scale=" + scale;
+				+ banner + ", description=" + description + ",  scale=" + scale;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ Objects.hash(address, avatar, banner, category, description,
-						email, followers, id, jobs, name, password, scale);
+		result = prime * result + Objects.hash(avatar, banner, category,
+				description, email, followers, id, jobs, name, password, scale);
 		return result;
 	}
 
@@ -107,8 +106,7 @@ public class Company extends DateAudit {
 		if (getClass() != obj.getClass())
 			return false;
 		Company other = (Company) obj;
-		return Objects.equals(address, other.address)
-				&& Objects.equals(avatar, other.avatar)
+		return Objects.equals(avatar, other.avatar)
 				&& Objects.equals(id, other.id)
 				&& Objects.equals(banner, other.banner)
 				&& Objects.equals(category, other.category)
@@ -120,9 +118,5 @@ public class Company extends DateAudit {
 				&& Objects.equals(password, other.password)
 				&& Objects.equals(scale, other.scale);
 	}
-	
-	
-	
-	
 
 }

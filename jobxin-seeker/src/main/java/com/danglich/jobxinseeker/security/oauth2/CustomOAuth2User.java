@@ -13,8 +13,6 @@ public class CustomOAuth2User implements OAuth2User{
     public CustomOAuth2User(OAuth2User oauth2User) {
         this.oauth2User = oauth2User;
     }
-
-    
     
 	@Override
 	public Map<String, Object> getAttributes() {
@@ -42,6 +40,11 @@ public class CustomOAuth2User implements OAuth2User{
 	public String getAvatar() {
 		
 		return oauth2User.getAttribute("picture");
+	}
+	
+	public String getFullName() {
+		
+		return oauth2User.getAttribute("name");
 	}
 
 }

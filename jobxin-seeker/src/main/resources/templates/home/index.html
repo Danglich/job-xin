@@ -48,7 +48,7 @@
 
                                 <p class="text-[13px] px-[12px] mr-[6px!important] rounded-[4px] bg-[#e9eaec]">Còn <strong th:text="${@timeUtil.daysOfExpired(job.expiredAt)}"></strong> ngày để ứng tuyển</p>
 
-                                <p th:text="${job.address}" class="bg-[#f3f5f7] text-[black]  rounded-[4px] px-[8px] py-[1px] text-[13px] mr-[6px!important]">
+                                <p th:text="${job.address.province}" class="bg-[#f3f5f7] text-[black]  rounded-[4px] px-[8px] py-[1px] text-[13px] mr-[6px!important]">
                                 </p>
     
                             </div>
@@ -151,7 +151,7 @@
 
                                 <p class="text-[13px] px-[12px] mr-[6px!important] rounded-[4px] bg-[#e9eaec]">Còn <strong th:text="${@timeUtil.daysOfExpired(job.expiredAt)}"></strong> ngày để ứng tuyển</p>
 
-                                <p th:text="${job.address}" class="bg-[#f3f5f7] text-[black]  rounded-[4px] px-[8px] py-[1px] text-[13px] mr-[6px!important]">
+                                <p th:text="${job.address.province}" class="bg-[#f3f5f7] text-[black]  rounded-[4px] px-[8px] py-[1px] text-[13px] mr-[6px!important]">
                                 </p>
     
                             </div>

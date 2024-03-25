@@ -56,8 +56,9 @@ public class Jobs extends DateAudit{
 	@Column(name = "title")
 	private String title;
 	
-	@Column(name = "address")
-	private String address;
+	@ManyToOne
+	@JoinColumn(name = "address_id")
+	private Address address;
 	
 	@Column(name = "quantity")
 	private int quantity;

@@ -133,6 +133,14 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 					.provider(Provider.GOOGLE).email(email).build();
 			repository.save(seeker);
 		}
+		else {
+			JobSeekers seeker = seekerOptional.get();
+			seeker.setAvatar(oAuth2User.getAvatar());
+			if(seeker.getFullName() == null)
+				seeker.setFullName(oAuth2User.getFullName());
+			repository.save(seeker);
+		}
+		
 
 	}
 

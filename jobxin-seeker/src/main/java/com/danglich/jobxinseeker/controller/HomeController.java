@@ -12,8 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.danglich.jobxinseeker.dto.SalaryRange;
 import com.danglich.jobxinseeker.model.Company;
+import com.danglich.jobxinseeker.model.Experience;
 import com.danglich.jobxinseeker.model.Jobs;
+import com.danglich.jobxinseeker.service.AddressService;
 import com.danglich.jobxinseeker.service.CompanyService;
 import com.danglich.jobxinseeker.service.JobService;
 
@@ -27,9 +30,15 @@ public class HomeController {
 	
 	private final JobService jobService;
 	private final CompanyService companyService;
+	private final AddressService addressService;
 	
 	@GetMapping("/")
 	public String showHome(Authentication authentication, Model theModel) {
+        // for search form
+		theModel.addAttribute("experiences", Experience.values());
+		theModel.addAttribute("addresses", addressService.getAll());
+		theModel.addAttribute("salaryRanges", SalaryRange.values());
+		
 		List<Jobs> newestJobs = jobService.getNewestJobs(0).getContent();
 		theModel.addAttribute("newestJobs", newestJobs);
 		

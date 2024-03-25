@@ -60,5 +60,14 @@ public class CustomUserDetail implements UserDetails{
 		// TODO Auto-generated method stub
 		return user.isEnabled();
 	}
+	
+	public String getFullName() {
+		return user.getFullName();
+	}
+	
+	public String getAvatar() {
+		
+		return user.getAvatar();
+	}
 
 }
