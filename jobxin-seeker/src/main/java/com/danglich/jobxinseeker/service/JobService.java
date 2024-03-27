@@ -1,6 +1,7 @@
 package com.danglich.jobxinseeker.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 
@@ -24,7 +25,7 @@ public interface JobService {
 	
 	List<Jobs> getTop4SuggestJobs();
 	
-	List<Jobs> getJobsSaved();
+	Set<Jobs> getJobsSaved();
 	
 	Page<Jobs> getJobsOfCompany(String keyword , Company company, int pageNumber);
 	

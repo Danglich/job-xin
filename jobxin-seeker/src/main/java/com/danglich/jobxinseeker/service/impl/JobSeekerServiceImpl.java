@@ -74,9 +74,8 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 
 		Jobs job = jobService.getById(jobId);
 		JobSeekers seeker = this.getCurrentUser();
-
-		seeker.saveJob(job);
-
+		Set<Jobs> savedJobs = seeker.getSavedJobs();
+		savedJobs.add(job);
 		repository.save(seeker);
 
 	}
@@ -85,9 +84,8 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 	public void unSaveJob(int jobId) {
 		Jobs job = jobService.getById(jobId);
 		JobSeekers seeker = this.getCurrentUser();
-
-		seeker.unSaveJob(job);
-
+		Set<Jobs> savedJobs = seeker.getSavedJobs();
+		savedJobs.remove(job);
 		repository.save(seeker);
 
 	}
@@ -117,7 +115,6 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 		seeker.setFullName(request.getFullName());
 		seeker.setPhoneNumber(request.getPhoneNumber());
 		repository.save(seeker);
-
 		return request;
 
 	}

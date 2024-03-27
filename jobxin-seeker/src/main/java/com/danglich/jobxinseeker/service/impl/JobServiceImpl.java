@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +96,7 @@ public class JobServiceImpl implements JobService {
 	}
 
 	@Override
-	public List<Jobs> getJobsSaved() {
+	public Set<Jobs> getJobsSaved() {
 
 		JobSeekers seeker = seekerService.getCurrentUser();
 

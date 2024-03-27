@@ -2,6 +2,7 @@ package com.danglich.jobxinseeker.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import org.hibernate.annotations.ManyToAny;
 
@@ -21,14 +22,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Builder
-@EqualsAndHashCode(callSuper=false)
 @Table(name = "job")
 public class Jobs extends DateAudit{
 	
@@ -80,5 +83,38 @@ public class Jobs extends DateAudit{
 	
 	@OneToMany(mappedBy = "job")
 	private List<Application> applications;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(address, applications, category,
+				company, description, experience, expiredAt, id, quantity,
+				salaryEnd, salaryStart, title);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Jobs other = (Jobs) obj;
+		return Objects.equals(address, other.address)
+				&& Objects.equals(applications, other.applications)
+				&& Objects.equals(category, other.category)
+				&& Objects.equals(company, other.company)
+				&& Objects.equals(description, other.description)
+				&& experience == other.experience
+				&& Objects.equals(expiredAt, other.expiredAt) && id == other.id
+				&& quantity == other.quantity && salaryEnd == other.salaryEnd
+				&& salaryStart == other.salaryStart
+				&& Objects.equals(title, other.title);
+	}
+	
+	
 
 }

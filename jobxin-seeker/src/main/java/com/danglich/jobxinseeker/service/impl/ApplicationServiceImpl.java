@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.danglich.jobxinseeker.dto.ApplicationDTO;
 import com.danglich.jobxinseeker.model.Application;
@@ -31,11 +32,12 @@ public class ApplicationServiceImpl implements ApplicationService{
 	private final JobSeekerService seekerService;
 
 	@Override
+	@Transactional
 	public Application create(ApplicationDTO form ) throws IOException {
 		
 		Jobs job = jobService.getById(form.getJobId());
 		
-		CV cv = cvService.upload(form.getFile());
+		CV cv = cvService.uploadForApplication(form.getFile());
 		
 		Application application = Application.builder()
 									.cv(cv)

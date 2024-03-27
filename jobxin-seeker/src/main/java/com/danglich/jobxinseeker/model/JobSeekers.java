@@ -81,7 +81,7 @@ public class JobSeekers extends DateAudit {
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinTable(name = "job_saved", joinColumns = @JoinColumn(name = "seeker_id"), inverseJoinColumns = @JoinColumn(name = "job_id"))
-	private List<Jobs> savedJobs;
+	private Set<Jobs> savedJobs;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,
 			CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
@@ -91,34 +91,6 @@ public class JobSeekers extends DateAudit {
 	@OneToMany(mappedBy = "seeker")
 	private List<Application> applications;
 
-	public void saveJob(Jobs job) {
-		if (savedJobs == null) {
-			savedJobs = new ArrayList<>();
-		}
-		if (!savedJobs.contains(job)) {
-			savedJobs.add(job);
-
-		}
-
-	}
-
-	public void unSaveJob(Jobs job) {
-		if (savedJobs == null) {
-			savedJobs = new ArrayList<>();
-		}
-		if (savedJobs.contains(job)) {
-			savedJobs.remove(job);
-
-		}
-
-	}
-
-	public void followCompany(Company company) {
-		this.followedCompanies.add(company);
-
-	}
-	
-	
 
 	@Override
 	public String toString() {

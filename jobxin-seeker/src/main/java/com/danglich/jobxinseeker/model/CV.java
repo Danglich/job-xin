@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Builder
 @Table(name = "cv")
-public class CV implements Serializable{
+public class CV extends DateAudit{
 	
 	/**
 	 * 

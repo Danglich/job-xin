@@ -28,7 +28,7 @@
                                 <div class="relative inline-flex cursor-pointer">
                                     <select onChange="handleSelectChange(event)" class="block appearance-none w-full bg-white border border-gray-300 hover:border-[green] px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                                         <option value="">Tất cả</option>
-                                        <option th:each="status : ${statuses}" 
+                                        <option th:each="status : ${statuses}" th:selected="${@compareUtils.compareEnumAndString(status , param.status)}"
                                         th:value="${status}" th:text="${status.message}">
                                                     
                                         </option>

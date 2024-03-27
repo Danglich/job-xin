@@ -1,6 +1,7 @@
 package com.danglich.jobxinseeker.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -74,7 +75,7 @@ public class JobController {
 	
 	@GetMapping("/viec-lam-da-luu")
 	public String showSavedJob(Model theModel) {
-		List<Jobs> savedJobs =  service.getJobsSaved();
+		Set<Jobs> savedJobs =  service.getJobsSaved();
 		
 		theModel.addAttribute("savedJobs", savedJobs);
 		
