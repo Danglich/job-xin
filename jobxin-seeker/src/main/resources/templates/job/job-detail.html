@@ -185,10 +185,10 @@
                                             <p class="text-[13px] px-[12px] rounded-[4px] bg-[#e9eaec]">Còn <strong  th:text="${@timeUtil.daysOfExpired(job.expiredAt)}">6</strong> ngày để ứng tuyển</p>
                                         </div>
                                     </div>
-                                    <div class="flex flex-column items-end justify-between min-w-[150px]" >
+                                    <div class="flex flex-[1] flex-column items-end justify-between min-w-[150px]" >
                                         <p class="font-[500] text-[green]">10 - 12 triệu</p>
                                         <div class="flex gap-[10px]">
-                                            <button class="opacity-[0.7] text-white text-[14px] h-[28px] px-[12px] rounded-[3px] bg-[green]">Ứng tuyển</button>
+                                            <a  th:href="@{/ung-tuyen/{jobId}(jobId=${job.id})}" class="opacity-[0.7] flex items-center text-white text-[14px] h-[28px] px-[12px] rounded-[3px] bg-[green]">Ứng tuyển</a>
                                             <button class="px-[6px] bg-[#effbef] rounded-[3px]">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#008000" class="bi bi-heart" viewBox="0 0 16 16">
                                                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
@@ -228,7 +228,7 @@
                                   </svg>
                                 <span class="ml-[6px] text-[#777]">Địa điểm </span>
                             </div>
-                            <p th:text="${job.company.address}">29 Lê Đại Hành, Hai Bà Trưng, Hà Nội</p>
+                            <p th:text="${job.company.address.province}">29 Lê Đại Hành, Hai Bà Trưng, Hà Nội</p>
                         </div>
                     </div>
 

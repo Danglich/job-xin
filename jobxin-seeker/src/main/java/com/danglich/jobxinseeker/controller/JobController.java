@@ -94,7 +94,7 @@ public class JobController {
 		theModel.addAttribute("job", job);
 
 		List<Jobs> suggestJobs = service
-				.getSuggestJobsByCategory(job.getCompany().getId());
+				.getSuggestJobsByCategory(job.getCategory().getId());
 		theModel.addAttribute("suggestJobs", suggestJobs);
 
 		List<Jobs> suggestJobsByUser = service.getTop4SuggestJobs();

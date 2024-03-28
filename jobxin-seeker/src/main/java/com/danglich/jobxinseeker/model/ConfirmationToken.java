@@ -42,7 +42,7 @@ public class ConfirmationToken {
 	private LocalDateTime confirmedAt;
 	
 	@ManyToOne
-	@JoinColumn(name = "seeker_id")
-	private JobSeekers seeker;
+	@JoinColumn(name = "user_id")
+	private User user;
 
 }

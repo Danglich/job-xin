@@ -1,5 +1,6 @@
 package com.danglich.jobxinseeker.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +21,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +38,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "seeker")
-public class JobSeekers extends DateAudit {
+public class JobSeekers  implements Serializable{
 
 	/**
 	 * 
@@ -47,12 +49,6 @@ public class JobSeekers extends DateAudit {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-
-	@Column(name = "email")
-	private String email;
-
-	@Column(name = "password")
-	private String password;
 
 	@Column(name = "full_name")
 	private String fullName;
@@ -65,13 +61,10 @@ public class JobSeekers extends DateAudit {
 
 	@Column(name = "avatar")
 	private String avatar;
-
-	@Column(name = "enabled")
-	private boolean enabled;
-
-	@Column(name = "provider")
-	@Enumerated(EnumType.STRING)
-	private Provider provider;
+	
+	@OneToOne()
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,
 			CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
@@ -94,10 +87,9 @@ public class JobSeekers extends DateAudit {
 
 	@Override
 	public String toString() {
-		return "JobSeekers [id=" + id + ", email=" + email + ", password="
-				+ password + ", fullName=" + fullName + ", phoneNumber="
+		return "JobSeekers [id=" + id + ", fullName=" + fullName + ", phoneNumber="
 				+ phoneNumber + ", code=" + code + ", avatar=" + avatar
-				+ ", enabled=" + enabled + ", provider=" + provider + "]";
+				+ ", enabled=" +"]";
 	}
 
 }

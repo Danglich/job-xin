@@ -8,6 +8,7 @@ import org.springframework.web.client.ResourceAccessException;
 
 import com.danglich.jobxinseeker.model.ConfirmationToken;
 import com.danglich.jobxinseeker.model.JobSeekers;
+import com.danglich.jobxinseeker.model.User;
 import com.danglich.jobxinseeker.repository.ConfirmationTokenRepository;
 import com.danglich.jobxinseeker.service.ConfirmationTokenService;
 
@@ -20,13 +21,13 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService{
 	private final ConfirmationTokenRepository confirmationTokenRepository;
 
 	@Override
-	public String save(JobSeekers seeker) {
+	public String save(User user) {
 		
 		String token = UUID.randomUUID().toString();
 		ConfirmationToken confirmationToken = ConfirmationToken.builder()
 													.createdAt(LocalDateTime.now())
 													.expiredAt(LocalDateTime.now().plusHours(24))
-													.seeker(seeker)
+													.user(user)
 													.token(token)
 													.build();
 		
@@ -45,9 +46,9 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService{
 
 
 	@Override
-	public boolean isExitedToken(Integer seekerId) {
+	public boolean isExitedToken(Integer userId) {
 		
-		return confirmationTokenRepository.findBySeekerIdAndExpiredAtBefore(seekerId, LocalDateTime.now()).isEmpty();
+		return confirmationTokenRepository.findByUserIdAndExpiredAtBefore(userId, LocalDateTime.now()).isEmpty();
 	}
 	
 	

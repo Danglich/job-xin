@@ -66,26 +66,7 @@ public class SeekerController {
 		return "profile/change_password";
 	}
 
-	@PostMapping("/change-password")
-	public String changePassword(
-			@Valid @ModelAttribute(name = "passwordDTO") ChangePasswordDTO passwordDTO,
-			BindingResult bindingResult, RedirectAttributes redirectAttributes,
-			Model theModel) {
-		if (bindingResult.hasErrors()) {
-			return "profile/change_password";
-		}
-
-		try {
-			seekerService.changePassword(passwordDTO);
-		} catch (IncorrectPasswordException e) {
-			// Incorrect password
-			theModel.addAttribute("errorMessage", e.getMessage());
-			return "profile/change_password";
-		}
-		redirectAttributes.addAttribute("success", true);
-		return "redirect:/doi-mat-khau";
-	}
-
+	
 	@PostMapping("/save-job")
 	public String saveJob(@RequestParam(name = "jobId") int jobId) {
 

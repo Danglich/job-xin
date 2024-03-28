@@ -10,11 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -22,17 +18,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.ResourceAccessException;
 
+import com.danglich.jobxinseeker.dto.ChangePasswordDTO;
 import com.danglich.jobxinseeker.dto.LoginDTO;
 import com.danglich.jobxinseeker.dto.RegisterDTO;
 import com.danglich.jobxinseeker.exception.AuthException;
 import com.danglich.jobxinseeker.exception.ConfirmationTokenExpiredException;
 import com.danglich.jobxinseeker.exception.ExitedRegistationException;
+import com.danglich.jobxinseeker.exception.IncorrectPasswordException;
 import com.danglich.jobxinseeker.model.ConfirmationToken;
-import com.danglich.jobxinseeker.model.CustomUserDetail;
 import com.danglich.jobxinseeker.model.JobSeekers;
 import com.danglich.jobxinseeker.model.Provider;
+import com.danglich.jobxinseeker.model.Role;
+import com.danglich.jobxinseeker.model.User;
 import com.danglich.jobxinseeker.repository.ConfirmationTokenRepository;
 import com.danglich.jobxinseeker.repository.JobSeekerRepository;
+import com.danglich.jobxinseeker.repository.UserRepository;
+import com.danglich.jobxinseeker.security.oauth2.CustomOAuth2User;
 import com.danglich.jobxinseeker.service.AuthService;
 import com.danglich.jobxinseeker.service.ConfirmationTokenService;
 import com.danglich.jobxinseeker.service.MailService;
@@ -48,6 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuthServiceImpl implements AuthService{
 	
+	private final UserRepository userRepository;
 	private final JobSeekerRepository seekerRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final MailService mailService;
@@ -59,17 +61,17 @@ public class AuthServiceImpl implements AuthService{
 	@Transactional
 	public void register(RegisterDTO registerDTO) {
 		
-		Optional<JobSeekers> seekerOptional = seekerRepository.findByEmail(registerDTO.getEmail());
+		Optional<User> userOptional = userRepository.findByEmail(registerDTO.getEmail());
 		
-		if(seekerOptional.isPresent()) {
-			if(seekerOptional.get().isEnabled())
+		if(userOptional.isPresent()) {
+			if(userOptional.get().isEnabled())
 				throw new AuthException("Email đã có tài khoản, vui lòng đăng nhập");
 			else
 				throw new ExitedRegistationException("This email already registered!");
 		}
 		
 		String token = confirmationTokenService.save(
-				seekerRepository.save(JobSeekers.builder()
+				userRepository.save(User.builder()
 							.email(registerDTO.getEmail())
 							.password(passwordEncoder.encode(registerDTO.getPassword()))
 							.enabled(false)
@@ -86,10 +88,10 @@ public class AuthServiceImpl implements AuthService{
 
 	@Override
 	public void reSendConfirmationToken(String email) {
-		JobSeekers seeker = seekerRepository.findByEmail(email)
+		User user = userRepository.findByEmail(email)
 								.orElseThrow(() -> new ResourceAccessException("Not found accout with email : " + email));
 		
-		String token = confirmationTokenService.save(seeker);
+		String token = confirmationTokenService.save(user);
 		String link = "http://localhost:8080/auth/confirm?token=" + token;
 		String emailHtml = this.buildEmailConfirm("", link);
 		mailService.send(email, "Xác thực tài khoản", emailHtml);
@@ -126,16 +128,15 @@ public class AuthServiceImpl implements AuthService{
 		}
 		
 		confirmationTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
-		JobSeekers seeker = confirmationToken.getSeeker();
-		seekerRepository.enable(confirmationToken.getSeeker().getId());
+		User user = confirmationToken.getUser();
+		userRepository.enable(confirmationToken.getUser().getId());
 		
 		// Auto authenticate
 		SecurityContextRepository securityContextRepository =
 		        new HttpSessionSecurityContextRepository(); 
 
-		CustomUserDetail userDetail = new CustomUserDetail(seeker);
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-        		seeker.getEmail(), null, userDetail.getAuthorities()); 
+        		user.getEmail(), null, user.getAuthorities()); 
         
         SecurityContext context = securityContextHolderStrategy.createEmptyContext();
         context.setAuthentication(authentication); 
@@ -170,12 +171,12 @@ public class AuthServiceImpl implements AuthService{
 	@Override
 	@Transactional
 	public void resetPassword(String email) {
-		JobSeekers seeker =  seekerRepository.findByEmail(email)
+		User user =  userRepository.findByEmail(email)
 							.orElseThrow(() -> new ResourceAccessException("Tài khoản email của bạn chưa đăng ký"));
 		String randomPassword = UUID.randomUUID().toString().substring(0, 8);
 		String passwordEncode = passwordEncoder.encode(randomPassword);
 		
-		seekerRepository.resetPassword(seeker.getId(), passwordEncode);
+		userRepository.resetPassword(user.getId(), passwordEncode);
 		
 		String htmlContent = "<html><head><style>"
                 + "body { font-family: Arial, sans-serif; background-color: #f4f4f4; }"
@@ -188,8 +189,67 @@ public class AuthServiceImpl implements AuthService{
                 + "<p>Vui lòng tuyệt đối không cho ai biết thông tin mật khẩu này!</p>"
                 + "</body></html>";
 		
-		mailService.send(seeker.getEmail(), "Gửi lại mật khẩu", htmlContent);
+		mailService.send(user.getEmail(), "Gửi lại mật khẩu", htmlContent);
 		
+	}
+
+	@Override
+	@Transactional
+	public void processLoginWithOAuth(CustomOAuth2User oAuth2User) {
+		String email = oAuth2User.getEmail();
+		Optional<User> userOptional = userRepository.findByEmail(email);
+		if (userOptional.isEmpty()) {
+			User user = User.builder()
+					.enabled(true)
+					.provider(Provider.GOOGLE)
+					.email(email)
+					.role(Role.SEEKER)
+					.build();
+			userRepository.save(user);
+			
+			JobSeekers seeker = JobSeekers.builder()
+										.avatar(oAuth2User.getAvatar())
+										.fullName(oAuth2User.getFullName())
+										.user(user)
+										.build();
+			seekerRepository.save(seeker);
+		}
+//		else {
+//			User user = userOptional.get();
+//			seeker.setAvatar(oAuth2User.getAvatar());
+//			if(seeker.getFullName() == null)
+//				seeker.setFullName(oAuth2User.getFullName());
+//			repository.save(seeker);
+//		}
+		
+
+	}
+
+	@Override
+	public User getCurrentUser() {
+		Authentication authentication = SecurityContextHolder.getContext()
+				.getAuthentication();
+
+		User user = userRepository.findByEmail(authentication.getName())
+				.orElseThrow(() -> new ResourceAccessException(
+						"Not found the user"));
+		return user;
+	}
+
+	@Override
+	@Transactional
+	public void changePassword(ChangePasswordDTO request) {
+		User user = userRepository.findByEmail(request.getEmail())
+				.orElseThrow(() -> new ResourceAccessException(
+						"Not found user with this email"));
+
+		if (!passwordEncoder.matches(request.getOldPassword(),
+				user.getPassword())) {
+			throw new IncorrectPasswordException("Mật khẩu không đúng");
+		}
+		String newPassword = passwordEncoder.encode(request.getNewPassword());
+		userRepository.resetPassword(user.getId(), newPassword);
+
 	}
 
 }

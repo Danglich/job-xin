@@ -20,8 +20,11 @@ import com.danglich.jobxinseeker.model.Company;
 import com.danglich.jobxinseeker.model.JobSeekers;
 import com.danglich.jobxinseeker.model.Jobs;
 import com.danglich.jobxinseeker.model.Provider;
+import com.danglich.jobxinseeker.model.User;
 import com.danglich.jobxinseeker.repository.JobSeekerRepository;
+import com.danglich.jobxinseeker.repository.UserRepository;
 import com.danglich.jobxinseeker.security.oauth2.CustomOAuth2User;
+import com.danglich.jobxinseeker.service.AuthService;
 import com.danglich.jobxinseeker.service.CompanyService;
 import com.danglich.jobxinseeker.service.JobSeekerService;
 import com.danglich.jobxinseeker.service.JobService;
@@ -36,15 +39,19 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 	private final JobService jobService;
 	private final PasswordEncoder passwordEncoder;
 	private final CompanyService companyService;
+	private final AuthService authService;
+	private final UserRepository userRepository;
 
 	@Override
 	public SeekerInfoDTO getSeekerInfo(String username) {
 
-		JobSeekers seeker = repository.findByEmail(username).orElseThrow(
+		User user = authService.getCurrentUser();
+
+		JobSeekers seeker = repository.findByUser(user).orElseThrow(
 				() -> new UsernameNotFoundException("Not found user"));
 
 		SeekerInfoDTO seekerInfo = new SeekerInfoDTO(seeker.getFullName(),
-				seeker.getEmail(), seeker.getPhoneNumber());
+				seeker.getUser().getEmail(), seeker.getPhoneNumber());
 
 		return seekerInfo;
 	}
@@ -52,19 +59,19 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 	@Override
 	public JobSeekers getByUsername(String username) {
 
-		return repository.findByEmail(username).orElseThrow(
+		User user = authService.getCurrentUser();
+		JobSeekers seeker = repository.findByUser(user).orElseThrow(
 				() -> new UsernameNotFoundException("Not found user"));
+
+		return seeker;
 	}
 
 	@Override
 	public JobSeekers getCurrentUser() {
 
-		Authentication authentication = SecurityContextHolder.getContext()
-				.getAuthentication();
-
-		JobSeekers seeker = repository.findByEmail(authentication.getName())
-				.orElseThrow(() -> new ResourceAccessException(
-						"Not found the user"));
+		User user = authService.getCurrentUser();
+		JobSeekers seeker = repository.findByUser(user).orElseThrow(
+				() -> new UsernameNotFoundException("Not found user"));
 
 		return seeker;
 	}
@@ -91,53 +98,18 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 	}
 
 	@Override
-	@Transactional
-	public void changePassword(ChangePasswordDTO request) {
-		JobSeekers seeker = repository.findByEmail(request.getEmail())
-				.orElseThrow(() -> new ResourceAccessException(
-						"Not found seeker with this email"));
-
-		if (!passwordEncoder.matches(request.getOldPassword(),
-				seeker.getPassword())) {
-			throw new IncorrectPasswordException("Mật khẩu không đúng");
-		}
-		String newPassword = passwordEncoder.encode(request.getNewPassword());
-		repository.resetPassword(seeker.getId(), newPassword);
-
-	}
-
-	@Override
 	public SeekerInfoDTO updateInfo(SeekerInfoDTO request) {
-		JobSeekers seeker = repository.findByEmail(request.getEmail())
+		User user = userRepository.findByEmail(request.getEmail())
 				.orElseThrow(() -> new ResourceAccessException(
-						"Not found seeker with this email"));
+						"Not found user with this email"));
+		
+		JobSeekers seeker = repository.findByUser(user).orElseThrow(() -> new ResourceAccessException(
+				"Not found user with this email"));
 
 		seeker.setFullName(request.getFullName());
 		seeker.setPhoneNumber(request.getPhoneNumber());
 		repository.save(seeker);
 		return request;
-
-	}
-
-	@Override
-	public void processLoginWithOAuth(CustomOAuth2User oAuth2User) {
-		String email = oAuth2User.getEmail();
-		Optional<JobSeekers> seekerOptional = repository.findByEmail(email);
-		if (seekerOptional.isEmpty()) {
-			JobSeekers seeker = JobSeekers.builder()
-					.avatar(oAuth2User.getAvatar())
-					.fullName(oAuth2User.getName()).enabled(true)
-					.provider(Provider.GOOGLE).email(email).build();
-			repository.save(seeker);
-		}
-		else {
-			JobSeekers seeker = seekerOptional.get();
-			seeker.setAvatar(oAuth2User.getAvatar());
-			if(seeker.getFullName() == null)
-				seeker.setFullName(oAuth2User.getFullName());
-			repository.save(seeker);
-		}
-		
 
 	}
 

@@ -57,7 +57,7 @@ public class CompanyController {
 		theModel.addAttribute("suggestJobs", suggestJobs);
 
 		boolean isFollowed = principal != null && company.getFollowers()
-				.stream().filter(s -> s.getEmail().equals(principal.getName()))
+				.stream().filter(s -> s.getUser().getEmail().equals(principal.getName()))
 				.toList().size() > 0;
 		theModel.addAttribute("isFollowed", isFollowed);
 		

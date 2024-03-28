@@ -104,7 +104,7 @@ public class CVServiceImpl implements CVService {
 	public void updateName(int id, String name) {
 		CV cv = repository.findById(id).orElseThrow(
 				() -> new ResourceNotFoundException("Not found the CV"));
-		if (!cv.getSeeker().getEmail().equals(SecurityContextHolder.getContext()
+		if (!cv.getSeeker().getUser().getEmail().equals(SecurityContextHolder.getContext()
 				.getAuthentication().getName())) {
 			throw new ForbiddenException(
 					"You are not allowed to perform this action");
@@ -119,7 +119,7 @@ public class CVServiceImpl implements CVService {
 	public void delete(int id) {
 		CV cv = repository.findById(id).orElseThrow(
 				() -> new ResourceNotFoundException("Not found the CV"));
-		if (!cv.getSeeker().getEmail().equals(SecurityContextHolder.getContext()
+		if (!cv.getSeeker().getUser().getEmail().equals(SecurityContextHolder.getContext()
 				.getAuthentication().getName())) {
 			throw new ForbiddenException(
 					"You are not allowed to perform this action");
@@ -133,7 +133,7 @@ public class CVServiceImpl implements CVService {
 	public void updateIsDefault(int id) {
 		CV newDefaultCv = repository.findById(id).orElseThrow(
 				() -> new ResourceNotFoundException("Not found the CV"));
-		if (!newDefaultCv.getSeeker().getEmail().equals(SecurityContextHolder.getContext()
+		if (!newDefaultCv.getSeeker().getUser().getEmail().equals(SecurityContextHolder.getContext()
 				.getAuthentication().getName())) {
 			throw new ForbiddenException(
 					"You are not allowed to perform this action");

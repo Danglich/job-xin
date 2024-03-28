@@ -1,45 +1,34 @@
 package com.danglich.jobxinseeker.controller;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.context.IExpressionContext;
-import org.thymeleaf.spring6.expression.Fields;
 
+import com.danglich.jobxinseeker.dto.ChangePasswordDTO;
 import com.danglich.jobxinseeker.dto.LoginDTO;
 import com.danglich.jobxinseeker.dto.RegisterDTO;
 import com.danglich.jobxinseeker.exception.AuthException;
 import com.danglich.jobxinseeker.exception.ExitedRegistationException;
+import com.danglich.jobxinseeker.exception.IncorrectPasswordException;
 import com.danglich.jobxinseeker.service.AuthService;
-import com.danglich.jobxinseeker.service.JobSeekerService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -186,5 +175,26 @@ public class AuthController {
 		return "auth/forget-password-success";
 			
 	}
+	
+	@PostMapping("/change-password")
+	public String changePassword(
+			@Valid @ModelAttribute(name = "passwordDTO") ChangePasswordDTO passwordDTO,
+			BindingResult bindingResult, RedirectAttributes redirectAttributes,
+			Model theModel) {
+		if (bindingResult.hasErrors()) {
+			return "profile/change_password";
+		}
+
+		try {
+			authService.changePassword(passwordDTO);
+		} catch (IncorrectPasswordException e) {
+			// Incorrect password
+			theModel.addAttribute("errorMessage", e.getMessage());
+			return "profile/change_password";
+		}
+		redirectAttributes.addAttribute("success", true);
+		return "redirect:/doi-mat-khau";
+	}
+
 
 }

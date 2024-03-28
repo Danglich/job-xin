@@ -1,5 +1,6 @@
 package com.danglich.jobxinseeker.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -34,7 +35,7 @@ import lombok.Setter;
 @Entity
 @Builder
 @Table(name = "company")
-public class Company extends DateAudit {
+public class Company implements Serializable {
 
 	/**
 	 * 
@@ -48,12 +49,6 @@ public class Company extends DateAudit {
 
 	@Column(name = "name")
 	private String name;
-
-	@Column(name = "email")
-	private String email;
-
-	@Column(name = "password")
-	private String password;
 
 	@Column(name = "avatar")
 	private String avatar;
@@ -70,6 +65,10 @@ public class Company extends DateAudit {
 	@ManyToOne
 	@JoinColumn(name = "address_id")
 	private Address address;
+	
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@ManyToOne
 	@JoinColumn(name = "category_id")
@@ -83,8 +82,8 @@ public class Company extends DateAudit {
 
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ", name=" + name + ", email=" + email
-				+ ", password=" + password + ", avatar=" + avatar + ", banner="
+		return "Company [id=" + id + ", name=" + name 
+				+ ", avatar=" + avatar + ", banner="
 				+ banner + ", description=" + description + ",  scale=" + scale;
 	}
 
@@ -93,7 +92,7 @@ public class Company extends DateAudit {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + Objects.hash(avatar, banner, category,
-				description, email, followers, id, jobs, name, password, scale);
+				description,  followers, id, jobs, name,  scale);
 		return result;
 	}
 
@@ -111,11 +110,9 @@ public class Company extends DateAudit {
 				&& Objects.equals(banner, other.banner)
 				&& Objects.equals(category, other.category)
 				&& Objects.equals(description, other.description)
-				&& Objects.equals(email, other.email)
 				&& Objects.equals(followers, other.followers) && id == other.id
 				&& Objects.equals(jobs, other.jobs)
 				&& Objects.equals(name, other.name)
-				&& Objects.equals(password, other.password)
 				&& Objects.equals(scale, other.scale);
 	}
 

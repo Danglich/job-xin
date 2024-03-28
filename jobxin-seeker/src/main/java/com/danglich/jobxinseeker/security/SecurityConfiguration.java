@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.danglich.jobxinseeker.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.danglich.jobxinseeker.service.AuthService;
 import com.danglich.jobxinseeker.service.JobSeekerService;
 
 import org.springframework.security.authentication.DisabledException;
@@ -29,13 +31,20 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfiguration {
 	
+	private  AuthenticationProvider authenticationProvider;
+	private  AuthService authService;
+	private  OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService;
 	
-	private final AuthenticationProvider authenticationProvider;
-	private final JobSeekerService seekerService;
-	private final OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService;
+	public SecurityConfiguration( AuthenticationProvider authenticationProvider,
+			@Lazy AuthService authService,
+			OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService) {
+		super();
+		this.authenticationProvider = authenticationProvider;
+		this.authService = authService;
+		this.oAuth2UserService = oAuth2UserService;
+	}
 	
 
 	@Bean
@@ -78,7 +87,7 @@ public class SecurityConfiguration {
 	@Bean 
 	public AuthenticationSuccessHandler oAuthenticationSuccessHandler() {
 		
-		return new OAuth2AuthenticationSuccessHandler(seekerService);
+		return new OAuth2AuthenticationSuccessHandler(authService);
 	}
 
 	@Bean
@@ -86,7 +95,9 @@ public class SecurityConfiguration {
         return new CustomAuthenticationFailureHandler();
     }
 
-    public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+    
+
+	public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
         @Override
         public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,

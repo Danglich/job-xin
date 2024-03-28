@@ -5,9 +5,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.danglich.jobxinseeker.model.CustomUserDetail;
-import com.danglich.jobxinseeker.model.JobSeekers;
-import com.danglich.jobxinseeker.repository.JobSeekerRepository;
+import com.danglich.jobxinseeker.model.User;
+import com.danglich.jobxinseeker.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,14 +14,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomUserService implements UserDetailsService{
 	
-	private final JobSeekerRepository userRepository;
+	private final UserRepository userRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
-		JobSeekers seeker = userRepository.findByEmail(username).orElseThrow(() -> new  UsernameNotFoundException("Not found user with this username"));
+		User user = userRepository.findByEmail(username).orElseThrow(() -> new  UsernameNotFoundException("Not found user with this username"));
 		
-		return new CustomUserDetail(seeker);
+		return user;
 	}
 
 }

@@ -7,6 +7,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 
+import com.danglich.jobxinseeker.service.AuthService;
 import com.danglich.jobxinseeker.service.JobSeekerService;
 
 import jakarta.servlet.ServletException;
@@ -19,13 +20,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccessHandler{
 	
-	private final JobSeekerService seekerService;
+	private final AuthService authService;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request,  HttpServletResponse response,
 			Authentication authentication ) throws IOException, ServletException {
 		CustomOAuth2User user = (CustomOAuth2User) authentication.getPrincipal();
-		seekerService.processLoginWithOAuth(user);
+		authService.processLoginWithOAuth(user);
 		
 		HttpSession session = request.getSession();
         SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");

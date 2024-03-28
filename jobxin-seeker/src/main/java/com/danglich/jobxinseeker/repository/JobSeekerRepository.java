@@ -8,22 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.danglich.jobxinseeker.model.JobSeekers;
+import com.danglich.jobxinseeker.model.User;
 
 @Repository
 public interface JobSeekerRepository extends JpaRepository<JobSeekers, Integer>{
 	
-	@Modifying
-	@Query("UPDATE JobSeekers s " +
-            "SET s.enabled = TRUE " +
-            "WHERE s.id = ?1")
-    void enable(int seekerId );
-	
-	@Modifying
-	@Query("UPDATE JobSeekers s " +
-            "SET s.password = ?2 " +
-            "WHERE s.id = ?1")
-    void resetPassword(int seekerId , String newPassword );
-	
-	Optional<JobSeekers> findByEmail(String email);
+	Optional<JobSeekers> findByUser(User user);
 
 }

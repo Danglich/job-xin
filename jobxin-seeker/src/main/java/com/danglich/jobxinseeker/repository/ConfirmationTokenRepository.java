@@ -23,5 +23,5 @@ public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationT
 	
 	Optional<ConfirmationToken> findByToken(String token);
 	
-	List<ConfirmationToken> findBySeekerIdAndExpiredAtBefore(Integer seekerId , LocalDateTime now);
+	List<ConfirmationToken> findByUserIdAndExpiredAtBefore(Integer userId , LocalDateTime now);
 }

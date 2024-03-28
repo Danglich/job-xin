@@ -18,11 +18,10 @@ public interface JobSeekerService {
 	
 	void unSaveJob(int jobId);
 	
-	void changePassword(ChangePasswordDTO request);
+	
 	
 	SeekerInfoDTO updateInfo(SeekerInfoDTO seekerInfoDTO);
-	
-	void processLoginWithOAuth(CustomOAuth2User oAuth2User) ;
+
 
 	void followCompany(int companyId);
 
