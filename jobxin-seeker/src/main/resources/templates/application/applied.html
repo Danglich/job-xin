@@ -42,9 +42,9 @@
                             </div>
                         </div>
                         <!-- Danh sách công việc -->
-                        <div class="flex items-center flex-col" th:if="${#lists.size(applications) < 1}">
-                            <img class="w-[300px] h-[300px] object-cover rounded-full" src="https://lollypop.design/wp-content/uploads/2022/01/emotional-design_mascots.png" />
-                            <h4>Không có kết quả tìm kiếm nào</h4>
+                        <div class="flex items-center justify-center gap-[16px] h-[360px] flex-col" th:if="${#lists.size(applications) < 1}">
+                            <img class="" th:src="@{/static/images/empty.webp}" />
+                            <p>Không có kết quả tìm kiếm nào</p>
                         </div>
                         <div th:each="item : ${applications}" class="mb-[32px]">
                                 <div class="flex p-[12px] mb-[16px] cursor-pointer hover:border-[green] bg-white rounded-[8px] border-[1px] border-solid border-[#ccc] hover:bg-[#fff]">

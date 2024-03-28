@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import com.danglich.jobxinseeker.model.Application;
 import com.danglich.jobxinseeker.model.ApplicationStatus;
 import com.danglich.jobxinseeker.service.ApplicationService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -58,7 +60,10 @@ public class ApplicationController {
 	}
 	
 	@PostMapping("/ung-tuyen")
-	public String showApplyPage(@ModelAttribute("application") ApplicationDTO applicationDTO) throws IOException {
+	public String showApplyPage(@Valid @ModelAttribute("application")  ApplicationDTO applicationDTO , BindingResult bindingResult) throws IOException {
+		if(bindingResult.hasErrors()) {
+			System.out.println("Loiiiiii");
+		}
 		service.create(applicationDTO);
 		
 		return "redirect:/lich-su-ung-tuyen";

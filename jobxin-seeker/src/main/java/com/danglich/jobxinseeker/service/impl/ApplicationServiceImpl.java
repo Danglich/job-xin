@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,18 +37,22 @@ public class ApplicationServiceImpl implements ApplicationService{
 	@Transactional
 	public Application create(ApplicationDTO form ) throws IOException {
 		
+		JobSeekers seeker = seekerService.getCurrentUser();
 		Jobs job = jobService.getById(form.getJobId());
+		CV cv = new CV();
 		
-		CV cv = cvService.uploadForApplication(form.getFile());
+		if(form.getMode().equals("UPLOADED")) 
+			cv = cvService.getById(form.getCvId());
+		else 
+			cv = cvService.uploadForApplication(form.getFile());
 		
 		Application application = Application.builder()
 									.cv(cv)
 									.message(form.getMessage())
 									.job(job)
 									.status(ApplicationStatus.APPLIED)
-									.seeker(cv.getSeeker())
+									.seeker(seeker)
 									.build();
-		
 		
 		return repository.save(application);
 	}
@@ -54,8 +60,7 @@ public class ApplicationServiceImpl implements ApplicationService{
 	@Override
 	public Page<Application> getAppliedForCurrentUser(int pageNumber, ApplicationStatus status) {
 		JobSeekers seeker = seekerService.getCurrentUser();
-		Pageable page = PageRequest.of(pageNumber, 6);
-		
+		Pageable page = PageRequest.of(pageNumber, 6 , Sort.by(Direction.DESC, "createdAt"));
 		if(status == null) {
 			return repository.findBySeekerId(seeker.getId(), page); 
 		}

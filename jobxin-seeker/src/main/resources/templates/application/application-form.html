@@ -5,6 +5,7 @@
      <link th:href="@{/static/style/home.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/static/style/output.css}" rel="stylesheet"  />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
 </head>
 <body>
     <div th:replace="home/header.html :: body"></div>
@@ -22,19 +23,25 @@
                     </div>
 
                     <div class="bg-white rounded-[10px] px-[24px] py-[16px] mt-[28px]">
-                        <form  th:action="@{/ung-tuyen}" th:object="${application}" method="post" enctype="multipart/form-data">
+                        
+                        <form th:action="@{/ung-tuyen}" th:object="${application}" method="post" enctype="multipart/form-data">
+                            <input onChange="handleCvModeChange()" type="radio" id="cv_uploaded" th:field="*{mode}" required value="UPLOADED">
+                            <label for="html" class="font-bold text-[17px]">Sử dụng CV đã tải lên</label><br>
+                            <input onChange="handleCvModeChange()" type="radio" id="new_cv" th:field="*{mode}" required value="NEW">
+                            <label for="css" class="font-bold text-[17px]">Tải CV từ máy</label><br>
                             <input type="hidden" th:field="*{jobId}" />
-                            <div class="flex items-center  gap-[16px]">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-person-square" viewBox="0 0 16 16">
-                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
-                                  </svg>
-                                  <span class="font-bold text-[17px]">Chọn CV để ứng tuyển</span>
-                            </div>
+                            <ul  id="form_cv_uploaded" class="px-[14px] mt-[16px] py-[16px] rounded-[8px] border-[1px] border-solid border-[green]">
+                                <h4 class="text-[18px]">CV đã tải lên</h4> 
+                                <label th:for="'cvId' + ${cv.id}" th:each="cv : ${cvs}"  th:data-value="${cv.id}" class="h-[40px] mb-[16px] flex group rounded-[4px] cursor-pointer items-center justify-between px-[12px] border-[1px] hover:border-[green!important] border-solid border-[#ccc]">
+                                    <input type="radio" th:field="*{cvId}" th:value="${cv.id}" th:id="'cvId' + ${cv.id}"  required>
+                                    <span th:text="${cv.filename}">cv_nguyen_dang_lich.pdf</span>
+                                    <a target="_blank" th:href="@{/xem-cv/{cvId}(cvId = ${cv.id})}" class="font-[500]  group-hover:inline-block text-green-900">Xem</a>
+                                </label>
+                            </ul>
 
-                            <div class="mt-[12px]">
+                            <div  id="form_new_cv"  class="mt-[12px] hidden">
                                 <p class="font-[500] text-[17px]">Tải lên từ máy tính</p>
-                                <input class="mt-[6px]" type="file" th:field="*{file}" required accept="application/pdf">
+                                <input id="file_input" class="mt-[6px]" type="file" th:field="*{file}"  accept="application/pdf">
 
                             </div>
 
@@ -51,6 +58,7 @@
 
                             <button class="h-[42px] mt-[16px] hover:opacity-[0.8] w-[200px] rounded bg-green-700 text-white ">Nộp hồ sơ ứng tuyển</button>
                         </form>
+                        
 
                     </div>
                 </div>
@@ -124,32 +132,53 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    function handleFileSelect(event) {
-      var files = event.target.files;
-      var output = document.getElementById("fileList");
+    
 
-      for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        var listItem = document.createElement("li");
-        listItem.innerHTML =
-          "<span>" + file.name + "</span>" +
-          "<button onclick='removeFile(this)'>Xóa</button>" +
-          "<button onclick='resetFileInput()'>Chọn lại</button>";
-        output.appendChild(listItem);
-      }
+    function handleCvModeChange() {
+        var formForCvUploaded = document.getElementById("form_cv_uploaded");
+        let formForNewCv = document.getElementById("form_new_cv");
+        var isUseCvUploaded = document.getElementById("cv_uploaded");
+        var isUseNewCv = document.getElementById("new_cv");
+        let inputFile = document.getElementById("file_input");
+        
+        if(isUseCvUploaded.checked ) {
+            formForCvUploaded.classList.remove("hidden");
+            formForNewCv.classList.add("hidden");
+            inputFile.required = false;
+
+            var inputs = document.querySelectorAll('input[name="cvId"]');
+            inputs.forEach(function(input) {
+                input.required = true;
+            });
+        } else {
+            formForNewCv.classList.remove("hidden");
+            formForCvUploaded.classList.add("hidden");
+            inputFile.required = true;
+            
+            var inputs = document.querySelectorAll('input[name="cvId"]');
+            inputs.forEach(function(input) {
+                input.required = false;
+            });
+        }
+
     }
 
-    function removeFile(button) {
-      var listItem = button.parentNode;
-      listItem.parentNode.removeChild(listItem);
-    }
+    function handleChooseCvUploaded(event) {
+        let value = event.target.getAttribute("data-value");
+        let inputCvId = document.getElementById("cvId");
+        inputCvId.value = value;
 
-    function resetFileInput() {
-      var fileInput = document.getElementById("fileInput");
-      fileInput.value = "";
-      var output = document.getElementById("fileList");
-      output.innerHTML = "";
+        let cvItems = document.querySelectorAll("#form_cv_uploaded li");
+        cvItems.forEach((item) => {
+            item.classList.remove("border-[green!important]");
+            item.classList.remove("border-[2px]");
+            item.classList.remove("text-[green!important]");
+        })
+
+        event.target.classList.add("border-[green!important]");
+        event.target.classList.add("border-[2px]");
     }
+    
   </script>
 
 </body>
