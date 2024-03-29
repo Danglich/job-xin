@@ -1,8 +1,8 @@
 package com.danglich.jobxinseeker.model;
 
 public enum Role {
-	SEEKER,
-	EMPLOYER,
-	ADMIN
+	ROLE_SEEKER,
+	ROLE_EMPLOYER,
+	ROLE_ADMIN
 
 }

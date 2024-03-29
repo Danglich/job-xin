@@ -37,7 +37,6 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 
 	private final JobSeekerRepository repository;
 	private final JobService jobService;
-	private final PasswordEncoder passwordEncoder;
 	private final CompanyService companyService;
 	private final AuthService authService;
 	private final UserRepository userRepository;
@@ -50,7 +49,7 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 		JobSeekers seeker = repository.findByUser(user).orElseThrow(
 				() -> new UsernameNotFoundException("Not found user"));
 
-		SeekerInfoDTO seekerInfo = new SeekerInfoDTO(seeker.getFullName(),
+		SeekerInfoDTO seekerInfo = new SeekerInfoDTO(user.getFullname(),
 				seeker.getUser().getEmail(), seeker.getPhoneNumber());
 
 		return seekerInfo;
@@ -61,7 +60,7 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 
 		User user = authService.getCurrentUser();
 		JobSeekers seeker = repository.findByUser(user).orElseThrow(
-				() -> new UsernameNotFoundException("Not found user"));
+				() -> new UsernameNotFoundException("Not found seeker"));
 
 		return seeker;
 	}
@@ -106,9 +105,10 @@ public class JobSeekerServiceImpl implements JobSeekerService {
 		JobSeekers seeker = repository.findByUser(user).orElseThrow(() -> new ResourceAccessException(
 				"Not found user with this email"));
 
-		seeker.setFullName(request.getFullName());
+		user.setFullname(request.getFullName());
 		seeker.setPhoneNumber(request.getPhoneNumber());
 		repository.save(seeker);
+		userRepository.save(user);
 		return request;
 
 	}

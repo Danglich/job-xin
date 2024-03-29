@@ -203,13 +203,13 @@ public class AuthServiceImpl implements AuthService{
 					.enabled(true)
 					.provider(Provider.GOOGLE)
 					.email(email)
-					.role(Role.SEEKER)
+					.fullname(oAuth2User.getFullname())
+					.role(Role.ROLE_SEEKER)
 					.build();
 			userRepository.save(user);
 			
 			JobSeekers seeker = JobSeekers.builder()
 										.avatar(oAuth2User.getAvatar())
-										.fullName(oAuth2User.getFullName())
 										.user(user)
 										.build();
 			seekerRepository.save(seeker);

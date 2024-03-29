@@ -1,5 +1,7 @@
 package com.danglich.jobxinseeker.exception;
 
+
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,6 +22,14 @@ public class GlobalExceptionHandler {
 		
 		return "page/notfound";
 	}
+	
+	@ExceptionHandler(AccessDeniedException.class)
+	public String handleAccessDeniedException(AccessDeniedException ex) {
+		ex.printStackTrace();
+		
+		return "page/access_denied";
+	}
+	
 	
 	@ExceptionHandler(Exception.class)
 	public void handleException(Exception ex ) {

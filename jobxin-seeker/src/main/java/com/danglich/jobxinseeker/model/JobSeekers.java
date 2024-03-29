@@ -50,8 +50,6 @@ public class JobSeekers  implements Serializable{
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "full_name")
-	private String fullName;
 
 	@Column(name = "phone_number")
 	private String phoneNumber;
@@ -87,7 +85,7 @@ public class JobSeekers  implements Serializable{
 
 	@Override
 	public String toString() {
-		return "JobSeekers [id=" + id + ", fullName=" + fullName + ", phoneNumber="
+		return "JobSeekers [id=" + id  + ", phoneNumber="
 				+ phoneNumber + ", code=" + code + ", avatar=" + avatar
 				+ ", enabled=" +"]";
 	}

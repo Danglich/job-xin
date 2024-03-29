@@ -42,7 +42,7 @@ public class CustomOAuth2User implements OAuth2User{
 		return oauth2User.getAttribute("picture");
 	}
 	
-	public String getFullName() {
+	public String getFullname() {
 		
 		return oauth2User.getAttribute("name");
 	}

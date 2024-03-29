@@ -57,18 +57,20 @@
         </ul>
 
         <div >
-            <div sec:authorize="isAuthenticated()">
+            <div class="flex items-center gap-[24px]" sec:authorize="isAuthenticated()">
+                <div sec:authorize ="hasRole('ROLE_EMPLOYER')">
+                    <a class="btn btn-info" th:href="@{/employer/home}">Tuyển dụng</a>
+                </div>
+
                 <div class="relative group flex items-center gap-[16px] rounded-[40px] bg-[#f5f5f5] px-[12px] py-[8px] cursor-pointer">
-                    <img th:if="${#authentication.principal.avatar}" th:src="${#authentication.principal.avatar}" class="w-[32px] h-[32px] object-cover object-center rounded-full" />
-                    <img th:if="${#authentication.principal.avatar == null}" th:src="@{/static/images/avatar-default.jpg}" class="w-[32px] h-[32px] object-cover object-center rounded-full" />
-                    <span sec:authentication="principal.fullName" class="font-[500]"></span>
+                    <img  th:src="@{/static/images/avatar-default.jpg}" class="w-[32px] h-[32px] object-cover object-center rounded-full" />
+                    <span sec:authentication="principal.fullname" class="font-[500]"></span>
 
                     <div class="absolute group-hover:block hidden z-[10] top-[100%] right-[0] w-[400px] bg-white shadow-md rounded-[8px] px-[16px] py-[12px]">
                         <div class="flex gap-[16px]">
-                            <img th:if="${#authentication.principal.avatar}" th:src="${#authentication.principal.avatar}" class="w-[32px] h-[32px] object-cover object-center rounded-full" />
-                            <img th:if="${#authentication.principal.avatar == null}" th:src="@{/static/images/avatar-default.jpg}" class="w-[32px] h-[32px] object-cover object-center rounded-full" />
+                            <img  th:src="@{/static/images/avatar-default.jpg}" class="w-[32px] h-[32px] object-cover object-center rounded-full" />
                             <div class="">
-                                <h4 sec:authentication="principal.fullName" class="text-[15px] text-green-800"></h4>
+                                <h4 sec:authentication="principal.fullname" class="text-[15px] text-green-800"></h4>
                                 <p class="text-[14px] text-[#777]">Mã ứng viên : <span class="font-bold text-[#444]">#fafsg4</span></p>
                                 <p th:text="${#authentication.name}" class="text-[14px] text-[#777]"></p>
                             </div>
@@ -111,6 +113,7 @@
                     </div>
                 </div>
 
+                
                 
             </div>
             <div sec:authorize="!isAuthenticated()">

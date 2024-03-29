@@ -52,7 +52,8 @@ public class User extends DateAudit implements UserDetails{
 	@Column(name = "enabled")
 	private boolean enabled;
 	
-	
+	@Column(name = "fullname")
+	private String fullname;
 	
 	@Column(name = "provider")
 	@Enumerated(EnumType.STRING)
@@ -64,7 +65,6 @@ public class User extends DateAudit implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
 		return Collections.singleton(new SimpleGrantedAuthority(role.name()));
 	}
 
@@ -95,7 +95,9 @@ public class User extends DateAudit implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		return isEnabled();
+		return enabled;
 	}
+	
+	
 
 }
