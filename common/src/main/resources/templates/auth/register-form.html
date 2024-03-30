@@ -42,6 +42,14 @@
 							<span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="text-danger"></span>
 							<span th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="text-danger mt-[4px] block"></span>
 						</div>
+						<div class="flex items-start">
+							<div class="flex items-center h-5">
+							  <input id="isEmployer" th:field="*{employer}" aria-describedby="isEmployer" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-green-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-green-600 dark:ring-offset-gray-800" >
+							</div>
+							<div class="ml-3 text-sm">
+							  <label for="isEmployer" class="text-gray-500 dark:text-gray-300">Bạn là nhà tuyển dụng ?</label>
+							</div>
+						</div>
 						<div class="flex items-center justify-end">
 							
 							<a th:href="@{/auth/forget-password}" class="text-sm font-medium text-green-600 hover:underline dark:text-green-500">Quên mật khẩu?</a>

@@ -20,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -47,7 +48,7 @@ public class JobSeekers  implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "user_id")
 	private int id;
 
 
@@ -61,6 +62,7 @@ public class JobSeekers  implements Serializable{
 	private String avatar;
 	
 	@OneToOne()
+	@MapsId
 	@JoinColumn(name = "user_id")
 	private User user;
 

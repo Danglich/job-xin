@@ -25,11 +25,13 @@ import com.danglich.jobxinseeker.exception.AuthException;
 import com.danglich.jobxinseeker.exception.ConfirmationTokenExpiredException;
 import com.danglich.jobxinseeker.exception.ExitedRegistationException;
 import com.danglich.jobxinseeker.exception.IncorrectPasswordException;
+import com.danglich.jobxinseeker.model.Company;
 import com.danglich.jobxinseeker.model.ConfirmationToken;
 import com.danglich.jobxinseeker.model.JobSeekers;
 import com.danglich.jobxinseeker.model.Provider;
 import com.danglich.jobxinseeker.model.Role;
 import com.danglich.jobxinseeker.model.User;
+import com.danglich.jobxinseeker.repository.CompanyRepository;
 import com.danglich.jobxinseeker.repository.ConfirmationTokenRepository;
 import com.danglich.jobxinseeker.repository.JobSeekerRepository;
 import com.danglich.jobxinseeker.repository.UserRepository;
@@ -56,6 +58,7 @@ public class AuthServiceImpl implements AuthService{
 	private final ConfirmationTokenService confirmationTokenService;
 	private final ConfirmationTokenRepository confirmationTokenRepository;
 	private final AuthenticationManager authenticationManager;
+	private final CompanyRepository companyRepository;
 	
 	@Override
 	@Transactional
@@ -70,13 +73,27 @@ public class AuthServiceImpl implements AuthService{
 				throw new ExitedRegistationException("This email already registered!");
 		}
 		
-		String token = confirmationTokenService.save(
-				userRepository.save(User.builder()
-							.email(registerDTO.getEmail())
-							.password(passwordEncoder.encode(registerDTO.getPassword()))
-							.enabled(false)
-							.provider(Provider.DATABASE)
-							.build()));
+		User newUser = userRepository.save(User.builder()
+				.email(registerDTO.getEmail())
+				.password(passwordEncoder.encode(registerDTO.getPassword()))
+				.enabled(false)
+				.role(registerDTO.isEmployer() ? Role.ROLE_EMPLOYER : Role.ROLE_SEEKER)
+				.provider(Provider.DATABASE)
+				.build());
+		
+		JobSeekers seeker = JobSeekers.builder()
+				.user(newUser)
+				.build();
+		seekerRepository.save(seeker);
+		
+		if(registerDTO.isEmployer()) {
+			Company company = Company.builder()
+										.user(newUser)
+										.build();
+			companyRepository.save(company);
+		}
+		
+		String token = confirmationTokenService.save(newUser);
 		
 		
 		String link = "http://localhost:8080/auth/confirm?token=" + token;

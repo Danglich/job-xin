@@ -34,6 +34,8 @@ public class RegisterDTO {
 	
 	@NotBlank(message = "Vui lòng nhập lại mật khẩu")
 	private String confirmPassword;
+	
+	private boolean employer;
 
 	
 	
